@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes rotate3d {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.perspective-800 {
+  perspective: 500px;
+}
+
+.rotate-3d {
+  animation: rotate3d 80s infinite linear;
+}
+
+
+
+body{
+    padding:0px;
+    margin:0;
+    border:0;
+}
