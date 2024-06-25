@@ -1,0 +1,23 @@
+{
+
+ "user":{
+    "id":1,
+    "username":"",
+     "email":"",
+     "fullname":"",
+     "password": ""},
+
+
+
+"post":[{
+    "id":1,
+    "author":"author",
+    "title":"title",
+    "body":"body"
+}],
+"comments":[
+    {"id":1, "body":"lorem ipsum sit dolor est","postId":1}
+],
+
+"profile":{"name": "typicode"}
+}

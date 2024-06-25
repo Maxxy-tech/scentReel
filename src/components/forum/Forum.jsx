@@ -58,7 +58,7 @@ const Forum = () => {
 
       <div
         className={
-          darkModemmit
+          darkMode
             ? "w-full h-auto bg-gray-800 p-4"
             : "w-full h-auto bg-white p-4"
         }

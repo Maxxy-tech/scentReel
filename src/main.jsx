@@ -4,8 +4,8 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
-import Login from './components/login/Login'
-import Signup from './components/sign up/Signup'
+import Login from './components/auth/Login'
+import Signup from './components/auth/Register'
 import Brand  from './components/brand/Brand'
 import Blog from './components/blog/Blog'
 import Forum from './components/forum/Forum'
