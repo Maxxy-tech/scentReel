@@ -1,15 +1,5 @@
-import {createContext,useContext} from 'react'
+import React from 'react'
 
-export const userContext=createContext({
-    user:null,
-    login: ()=>{},
-    logout:()=>{}
-})
-const USER={
-    name:"Guest",isGuestUser:true
-};
+const UserContext=React.createContext();
 
-export function userContext.Provider({children}){
-    const [user, setUser] = useState()
-    return <userContext.Provider value={{}}>{children}</userContext.Provider>
-}
+export default UserContext;

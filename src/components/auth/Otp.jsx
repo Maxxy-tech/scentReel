@@ -44,6 +44,7 @@ const Otp = () => {
         payload,
         { headers: { "Content-Type": "application/json" } }
       );
+      console.log("payload being sent", payload)
      console.log(response.data);
     } catch (error) {
       console.error(error.response.data.message);

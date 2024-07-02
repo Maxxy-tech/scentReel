@@ -11,6 +11,9 @@ import {
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
+const canVote =(user)=>{
+
+}
 const Poll = () => {
   const [votes, setVotes] = useState([0, 0, 0, 0]);
 
@@ -43,7 +46,10 @@ const Poll = () => {
           "rgba(255, 206, 86, 1)",
           "rgba(75, 192, 192, 1)",
         ],
-        borderWidth: 1,
+        borderWidth: 15,
+
+        barThickness:20,
+        Responsive:true,
       },
     ],
   };

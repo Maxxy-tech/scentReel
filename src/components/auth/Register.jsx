@@ -51,7 +51,7 @@ const Login = () => {
         const token = response.data.accesstoken;
         localStorage.setItem("token", token);
         console.log(token);
-        if (response.status == 201) {
+        if (response.status == 500) {
           setPopup(true);
           if (popup) {
             return (
@@ -85,7 +85,7 @@ const Login = () => {
 
   if (isLoading) {
     return (
-      <div className=" text-center ">
+      <div className=" text-center relative  ">
         <Navbar />
         <div className="mt-[25%]">
           <span className="loader mt-14 p-5 m-2"></span>
@@ -96,11 +96,11 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-[#608A7D] sm:w-[1440px] w-[100vw] h-[1831px] top-[-195px] left-[434px]">
+    <div className="bg-[#608A7D] sm:w-[100%] w-[100%] h-[100%] top-[-195px] left-[434px]">
       <Navbar />
 
       <div className="sm:flex top-8 sm:ml-[28rem]">
-        <div className="bg-white sm:w-[906px] w-[100vw] sm:top-[380px] top-[190px] left-[214px]   sm:h-[870px] sm:left-[434px] border-[1px] border-[#608A7D] rounded-[20px] ">
+        <div className="bg-white sm:w-[100%] w-[100vw] sm:top-[380px] top-[190px] left-[214px]   sm:h-[870px] sm:left-[434px] border-[1px] border-[#608A7D] rounded-[20px] ">
           <div className="w-[100vw] h-full pr-4 mr-4">
             {" "}
             <div>
@@ -109,8 +109,8 @@ const Login = () => {
               </h1>
             </div>
             {/* google registration section */}
-            <section className="w-full  sm:flex sm:ml-0 ml-8 mt-8 gap-10">
-              <div className="w-[270px] h-[40px] top-[566px] left-[896px] rounded-[10px] border-[1px] flex gap-[1rem] capitalize font-semibold border-[#608A7D]">
+            <section className="w-full  sm:flex sm:ml-0 ml-[14%] mt-8 gap-10">
+              <div className="w-[270px]   h-[40px] top-[566px] left-[896px] rounded-[10px] border-[1px] flex gap-[1rem] capitalize font-semibold border-[#608A7D]">
                 <div className=" bg-[#608A7D]">
                   <img
                     src={google}
@@ -205,7 +205,7 @@ const Login = () => {
                 </button>
               </div>
 
-              <p className="p-2 text-red-700">{message}</p>
+              <p className="p-2 text-red-700 text-center mt-2">{message}</p>
             </section>
           </div>
         </div>

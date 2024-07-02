@@ -1,14 +1,14 @@
 import Home from "./components/home/Hero";
-import userContext from './context/userContext'
+import UserContextProvider from './context/userContextProvider'
 import Showcase from './components/Showcase';
 const App = () => {
   return (
     <div className="">
-      <userContextProvider>
+      <UserContextProvider>
       <Home />
       <Showcase />
 
-      </userContextProvider>
+      </UserContextProvider>
     </div>
   );
 };

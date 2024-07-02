@@ -1,8 +1,22 @@
 import Register from './Register'
+import {useContext,useState} from 'react';
+import UserContext from '../../context/userContext'
 
-   
+
 
 const Login = () => {
+
+  const [username, setUsername] = useState('')
+  const [password,setPassword] = useState('')
+
+  const {setUser}=useContext(UserContext)
+
+  const handleSubmit =(e)=>{
+    e.preventDefault()
+
+
+    setUser({username,password})
+  }
   return (
     <div>
     <Register />
@@ -107,7 +121,7 @@ export default Login
 //         <div>
 //           {" "}
 //           <h1>Sign in</h1>
-//           <div className="flex gap-2 ml-9 ">
+//           <div className="flex  justify-between gap-2 ml-9 ">
 //             <label htmlFor="email" className="flex">
 //               <h4></h4>
 //             </label>
