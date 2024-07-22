@@ -1,6 +1,6 @@
 import Navbar from "./Navbar.jsx";
 import hero from "../../assets/Background.png";
-
+import Footer from './Footer'
 // import Forum from '../forum/Forum'
 
 const Hero = () => {
@@ -37,6 +37,8 @@ const Hero = () => {
             </div>
           </div>
         </div>
+
+
       </div>
       {/* <-----------------------------------section2 Forum------------------------------------------> */}
 
@@ -45,7 +47,7 @@ const Hero = () => {
           <h1>Fragrance of the week</h1>
         </div>
       </div> */}
-    </div>
+     </div>
   );
 };
 

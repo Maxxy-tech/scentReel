@@ -1,13 +1,32 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-
+import { Spinner } from "@material-tailwind/react";
+import Navbar from "../home/Navbar";
 const Otp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [validInput, setIsValidInput] = useState(false);
-  const [popup, setPopup] = useState(false);
+  const [isExpired, setIsExpired] = useState(false);
+  const [Time, setTime] = useState(120);
+  const [IntervalId, setIntervalId] = useState(null);
+  const [isLoading, setIsLoading]= useState(false)
   const OTP_REGEX = /^[0-9]{1}$/;
 
   const refs = useRef([]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (Time > 0) {
+        setTime(Time - 1);
+      } else if (Time == 0) {
+        setIsExpired(true);
+      }
+    }, 1000);
+    setIntervalId(intervalId);
+    return () => clearInterval(intervalId);
+  }, [Time]);
+
+  const minutes = Math.floor(Time / 60);
+  const seconds = Time % 60;
 
   const verify = () => {
     // All inputs should be numeric and filled
@@ -27,7 +46,7 @@ const Otp = () => {
 
       // Move focus to the next input
       if (value && index < otp.length - 1) {
-        refs.current[index + 1].focus();
+        refs.current[index + 1];
       }
     }
   };
@@ -36,48 +55,122 @@ const Otp = () => {
     otp: otp.join(""),
   };
 
+  const token = localStorage.getItem("token");
+
+
+  //APi request to verify token
   const handleSubmit = async (e) => {
     e.preventDefault;
     try {
       const response = await axios.post(
-        "https://scentreel-be.onrender.com/api/v1/auth/register",
+        "https://scentreel-be.onrender.com/api/v1/auth/verify",
         payload,
-        { headers: { "Content-Type": "application/json" } }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      console.log("payload being sent", payload)
-     console.log(response.data);
+      console.log("payload being sent", payload);
+      console.log(response.data);
     } catch (error) {
       console.error(error.response.data.message);
     }
   };
 
+  //Api request to resend otp
+
+     const ResendOtp = async (e) => {
+       setIsLoading(true)
+       e.preventDefault;
+
+       try {
+         const response = await axios.post(
+           "https://scentreel-be.onrender.com/api/v1/admins/resend-otp",
+           payload,
+           {
+             headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${token}`,
+             },
+           }
+         ); setIsLoading(false)
+         console.log("payload being sent", payload);
+         console.log(response.data);
+
+       } catch (error) {
+         console.error(error.response.data.message);
+       }
+     };
+
+
+
+
+
+
+
+
+
+
+   ////////////////////////////////////
+
   return (
-    <div className="h-[20rem] w-full bg-whitesmoke">
-      <div className="flex gap-4 w-full text-center sm:ml-[25%]  mt-">
-        {otp.map((num, index) => (
-          <div key={index} className="bg-white    rounded shadow-2xl shadow-black mt-[8rem] text-center  ">
-            <input
-              type="text"
-              name={`otp-${index}`}
-              value={num}
-              autoComplete="off"
-              onChange={(e) => handleChange(e, index)}
-              className={`sm:w-[6rem] w-[3rem] h-[3rem] p-2 sm:h-[6rem] rounded text-center  font-semibold text-[1rem] ${
-                validInput ? "border-green-500" : "border-red-500"
-              }`}
-              id={`otp-${index}`}
-              inputMode="numeric"
-              pattern="[0-9]*"
-              maxLength="1"
-              ref={(el) => (refs.current[index] = el)}
-            />
-            <label className="" htmlFor={`otp-${index}`}></label>
-          </div>
-        ))}
+    <div className=" mt-[4px] w-full bg-[#f1f1]  ">
+      <h4 className="p-2 mt-6 text-center capitalize font-normal w-full font-serif text-[17px]">
+        Enter Otp sent to your email here
+      </h4>
+
+      <div className="full mt-10  mr-6 ">
+        <div className="flex gap-2 lg:ml-[90px]  w-full sm:ml-[70px]  ml-5 text-center sm:w-[20px]  ">
+          {otp.map((num, index) => (
+            <div
+              key={index}
+              className="  mt-10   rounded shadow-xl shadow-white text-center  "
+            >
+              <input
+                type="text"
+                name={`otp-${index}`}
+                value={num}
+                autoComplete="off"
+                onChange={(e) => handleChange(e, index)}
+                className={`sm:w-[4rem]  w-[2rem] h-[3rem]  sm:h-[6rem] rounded text-center p-2 shadow-xl shadow-[#00000042] font-semibold text-[1rem] ${
+                  validInput ? "border-green-500" : "border-red-500"
+                }`}
+                id={`otp-${index}`}
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength="1"
+                ref={(e) => (refs.current[index] = e)}
+              />
+              <label className="" htmlFor={`otp-${index}`}></label>
+            </div>
+          ))}
+        </div>
+        <h5 className="text-red-600 mt-10 text-center capitalize font-thin tracking-wide w-full">
+          {isExpired ? (
+            <p className="">token has expired
+             <button className="border-[1px] w-[100px] cursor-pointer  uppercase  m-2 bg-red-500 mt-[20px] text-white" onClick= {ResendOtp} >{isLoading ? <Spinner
+                        color="green"
+                        className="h-8 w-6 text-center ml-[35%]  text-white"
+                      />:<p>click</p>} </button> to request another otp </p>
+          ) : (
+            <p >
+          <span className="text-[22px] mr-2">otp   expires in</span>  <span className="text-[25px] font-extrabold">{minutes}</span> <span className="font-bold text-[20px] m-0 ">:</span>{" "}
+              <span className="text-[25px] font-extrabold">{seconds.toString().padStart(2, "0")}</span>
+            </p>
+          )}
+        </h5>
       </div>
       {/* {validInput && <p>Valid OTP</p>}
       <pre>{JSON.stringify(payload, null, 2)}</pre> */}
-      <button onClick={handleSubmit}>submit</button>
+      <button
+        className="bg-[#0a6954f6] text-[#f7f6f6] font-bold h-[40px] rounded m-8 text-center ml-[110px] w-[90px] tracking-widest mt-[80px] uppercase text-[15px]"
+        onClick={handleSubmit}
+        disabled={isExpired}
+      >
+        submit
+      </button>
     </div>
   );
 };

@@ -18,10 +18,11 @@ label{
     font-size: medium;
     text-transform: capitalize;
     margin-left: ;
+    padding:4px;
 }
 
-button{
-    width:fixed(86px);
+.submit {
+    width:fixed(60px);
     height:fixed(40px);
     top:1104px;
     left:844px;
@@ -31,4 +32,34 @@ button{
     background-color: #608A7D;
     color: white;
 
+}
+
+.border{
+    border-color: #C7C7C7;
+;
+}
+
+/* For the visibility toggle button */
+.eye .eye{
+  position: absolute;
+  top: 50%;
+
+  bottom: px;
+  transform: translateY(-50%);
+  padding:2px;
+}
+
+/* To ensure the eye icons are visible */
+input[type='password'] + button img {
+  vertical-align: middle;
+}
+
+/* To manage visibility of notes */
+.visible {
+  display: block;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
 }

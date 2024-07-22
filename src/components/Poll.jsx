@@ -76,7 +76,7 @@ const Poll = () => {
           <div key={index} className="text-center">
             <p>{vote}</p>
             <button
-              className="border-[]  text-black bg-transparent rounded-lg p-1  w-[80px] h-[32px] top-[2580px] left-[753px] radius-[10px]"
+              className="border-[] bg-slate-800 text-black bg-transparent rounded-lg p-1  w-[80px] h-[32px] top-[2580px] left-[753px] radius-[10px]"
               onClick={() => handleVote(index)}
               aria-label={`Vote for Performance ${index + 1}`}
             >
