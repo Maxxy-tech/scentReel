@@ -41,7 +41,7 @@ const Forum = () => {
           : "bg-gray-100 text-black min-h-screen"
       }
     >
-      <Navbar className="" />
+      {/* <Navbar className="" /> */}
 
       <div className="text-center mt-6">
         <h1 className="font-sans font-extrabold text-[1.2rem] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#f0cd0b] to-black">

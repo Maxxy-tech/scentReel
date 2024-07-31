@@ -1,6 +1,7 @@
 import Navbar from "./Navbar.jsx";
 import hero from "../../assets/Background.png";
 import Footer from './Footer'
+
 // import Forum from '../forum/Forum'
 
 const Hero = () => {

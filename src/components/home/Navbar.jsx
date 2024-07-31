@@ -1,30 +1,38 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import facebook from "../../assets/facebook.png";
 import instagram from "../../assets/instagram.png";
 import twitter from "../../assets/twitter.png";
 import linkedin from "../../assets/linkedin.png";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../../context/userContext";
+import { useAuthContext } from "../../context/useAuthContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user } = useContext(UserContext);
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    setIsLogin(!!user);
+  }, [user]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   return (
-    <div className="bg-[#030101]  backdrop-blur-3xl box-content relative text-white  top-2  sm:m-3 sm:max-w-[100vw] shadow-2xl  z-50">
+    <div className="bg-[#030101] backdrop-blur-3xl relative text-white top-2 lg:m-3 lg:max-w-[100vw] shadow-2xl z-50">
       {/* Logo and Navbar */}
-      <div className="flex justify-between  items-center sm:ml-0 ml-4  sm:p-0 p-4 ">
+      <div className="flex justify-between items-center lg:p-0 p-4 lg:ml-0 ml-4">
         <div className="uppercase font-serif flex">
-          <span className="font-extrabold text-[1.5rem] sm:text-[2rem]">
+          <span className="font-extrabold text-[1.5rem] lg:text-[2rem]">
             scent
           </span>
-          <span className="font-extrabold text-[1.5rem] text-[#ce974f] sm:text-[2rem] ml-1">
+          <span className="font-extrabold text-[1.5rem] text-[#ce974f] lg:text-[2rem] ml-1">
             reel
           </span>
         </div>
-        <div className="sm:hidden px-6 ">
+        <div className="lg:hidden  px-6">
           <button onClick={toggleMenu} className="text-3xl">
             &#9776;
           </button>
@@ -32,17 +40,17 @@ const Navbar = () => {
         <nav
           className={`${
             menuOpen ? "block" : "hidden"
-          } sm:flex sm:items-center sm:static absolute text-center ease-linear  top-[3rem] left-0 w-full sm:w-auto backdrop-blur-2xl bg-[#0a0909d0] cursor-pointer sm:bg-transparent min-h-[40vh] sm:min-h-0 transition-transform`}
+          } lg:flex lg:items-center lg:static absolute text-center ease-linear top-[3rem] left-0 w-full lg:w-auto backdrop-blur-2xl bg-[#0a0909e3] cursor-pointer sm:bg-transparent min-h-[40vh] lg:min-h-0 transition-transform`}
           aria-label="main"
         >
-          <ul className="sm:flex sm:p-2 sm:mr-10 sm:space-x-8 sm:mt-0 p-8 uppercase font-semibold sm:ml-auto">
+          <ul className="lg:flex lg:p-2 lg:mr-10 lg:space-x-8 lg:mt-0 p-8 uppercase font-semibold sm:ml-auto">
             <li className="p-2">
               <NavLink
                 to="/"
                 className={({ isActive }) =>
-                  `" p-4 hover:bg-[#222727c0] ${
+                  `p-4 hover:bg-[#222727c0] ${
                     isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse  "`
+                  } rounded-lg hover:animate-pulse`
                 }
               >
                 Home
@@ -52,60 +60,60 @@ const Navbar = () => {
               <NavLink
                 to="/brand"
                 className={({ isActive }) =>
-                  `" p-4 hover:bg-[#2227275d] ${
+                  `p-4 hover:bg-[#2227275d] ${
                     isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse  "`
+                  } rounded-lg hover:animate-pulse`
                 }
               >
-                brand
+                Brand
               </NavLink>
             </li>
             <li className="p-2">
               <NavLink
                 to="/about"
                 className={({ isActive }) =>
-                  `" p-4 hover:bg-[#2227275d] ${
+                  `p-4 hover:bg-[#2227275d] ${
                     isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse  "`
+                  } rounded-lg hover:animate-pulse`
                 }
               >
-                about
+                About
               </NavLink>
             </li>
             <li className="p-2">
               <NavLink
                 to="/blog"
                 className={({ isActive }) =>
-                  `" p-4 hover:bg-[#2227275d] ${
+                  `p-4 hover:bg-[#2227275d] ${
                     isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse  "`
+                  } rounded-lg hover:animate-pulse`
                 }
               >
-                blog
+                Blog
               </NavLink>
             </li>
             <li className="p-2">
               <NavLink
                 to="/contact"
                 className={({ isActive }) =>
-                  `" p-4 hover:bg-[#2227275d] ${
+                  `p-4 hover:bg-[#2227275d] ${
                     isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse  "`
+                  } rounded-lg hover:animate-pulse`
                 }
               >
-                contact
+                Contact
               </NavLink>
             </li>
             <li className="p-2">
               <NavLink
                 to="/forum"
                 className={({ isActive }) =>
-                  `" p-4 hover:bg-[#2227275d] ${
+                  `p-4 hover:bg-[#2227275d] ${
                     isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse  "`
+                  } rounded-lg hover:animate-pulse`
                 }
               >
-                forum
+                Forum
               </NavLink>
             </li>
           </ul>
@@ -118,31 +126,31 @@ const Navbar = () => {
       </div>
 
       {/* Social and Action Buttons */}
-      <div className="bg-[#ffffff1f] ml-0">
-        <div className="p-4 flex justify-between gap-8 box-content sm:justify-between items-center">
-          <ul className="flex ml-0 justify-evenly gap-1 sm:gap-5">
-            <li className="h-6 w-6 shadow-2xl shadow-black md:w-[40px] md:h-[40px] bg-[#C19E70] rounded-full flex items-center justify-center">
+      <div className="bg-[#ffffff1f]">
+        <div className="p-4 flex justify-between gap-8 items-center">
+          <ul className="flex gap-1 sm:gap-5">
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
               <img
                 src={facebook}
                 alt="Facebook"
                 className="h-full w-full object-cover"
               />
             </li>
-            <li className="h-6 w-6 shadow-2xl shadow-black md:w-[40px] md:h-[40px] bg-[#C19E70] rounded-full flex items-center justify-center">
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
               <img
                 src={instagram}
                 alt="Instagram"
                 className="h-full w-full object-cover"
               />
             </li>
-            <li className="h-6 w-6 shadow-2xl shadow-black md:w-[40px] md:h-[40px] bg-[#C19E70] rounded-full flex items-center justify-center">
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
               <img
                 src={twitter}
                 alt="Twitter"
                 className="h-full w-full object-cover"
               />
             </li>
-            <li className="h-6 w-6 shadow-2xl shadow-black md:w-[40px] md:h-[40px] bg-[#C19E70] rounded-full flex items-center justify-center">
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
               <img
                 src={linkedin}
                 alt="LinkedIn"
@@ -150,21 +158,32 @@ const Navbar = () => {
               />
             </li>
           </ul>
-          <div className="flex justify-evenly box-border sm:mr-8 gap-2 sm:gap-10">
+          {isLogin && user ? (
+            <div>
+              <p>
+                <NavLink
+                  to="/user-dashboard"
+                  className={({ isActive }) =>
+                    `p-4 hover:bg-[#222727c0] ${
+                      isActive ? "text-[#f1ab4f]" : "text-[#fff]"
+                    } rounded-lg hover:animate-pulse`
+                  }
+                >
+                {user.username || 'User'} is logged in
+                </NavLink>
 
-         <button className="bg-black text-xs sm:text-sm uppercase w-20 sm:w-24  h-8 sm:h-10 font-serif text-[#f0a645] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
-            <NavLink
-            to ="/login"
-            >
-
-
-              Login
-             </NavLink></button>
-            <button className="bg-white text-xs sm:text-sm uppercase w-20 sm:w-24  h-8 sm:h-10 font-semibold font-serif text-[#000000] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
-              <NavLink to="/signup">
-              Signup</NavLink>
-            </button>
-          </div>
+              </p>
+            </div>
+          ) : (
+            <div className="flex gap-2 sm:gap-10">
+              <button className="bg-black text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-serif text-[#f0a645] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
+                <NavLink to="/login">Login</NavLink>
+              </button>
+              <button className="bg-white text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-semibold font-serif text-black hover:translate-y-1 hover:text-[#f1a31221] transition-all">
+                <NavLink to="/signup">Signup</NavLink>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

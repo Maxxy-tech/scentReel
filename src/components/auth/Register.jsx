@@ -183,9 +183,9 @@ const Signup = () => {
 
 
   return (
-    <div className="bg-[#608A7D] box-content w-full min-h-screen">
+    <div className="bg-[#608A7D] box-content w-full min-h-screen ]">
       <Navbar />
-      <div className="flex flex-col sm:flex-row p-4 sm:p-20 justify-center items-center">
+      <div className="flex flex-col sm:flex-row p-4 sm:p-20  mt-[20px] justify-center items-center">
         <div className="hidden md:hidden lg:flex sm:flex w-full sm:w-1/3 relative">
           <div className="relative w-full sm:w-[428.37px]   rounded-[380px] h-[611.12px] mt-10 ">
             <div className="w-[458.57px] ">
@@ -237,7 +237,7 @@ const Signup = () => {
                 </div>
               </section>
               <h3 className="text-center capitalize ">or</h3>
-              <section className=" h-auto ">
+              <section className=" h-auto lg:ml-[90px] ">
                 <InputField
                   label="Email"
                   type="email"
@@ -303,11 +303,11 @@ const Signup = () => {
                   note="4 to 24 characters. Must begin with a letter. Letters, numbers, underscores, hyphens allowed."
                   noteVisible={userFocus && username && !validName}
                 />
-                <div className=" justify-center mb-4">
+                <div className=" justify-center w-full mb-4">
                   <button
                     onClick={handleSubmit}
                     disabled={isButtonDisabled}
-                    className={`rounded capitalize submit border p-2 bg-[#608A7D] text-white submit w-full md:w-[500px] sm:w-[558px] h-10 ${
+                    className={`rounded capitalize submit border p-2 bg-[#608A7D] text-white text-center md:ml-[35%] submit w-full md:w-[100px] sm:w-[100px] h-10 ${
                       isButtonDisabled
                         ? "opacity-50 not-submit cursor-not-allowed"
                         : ""
@@ -330,7 +330,7 @@ const Signup = () => {
                    <p className="text-center  w-full mt-6">{errMsg} {message}</p>
                   </p>
                 </div>
-                <div className="text-center mt-4">
+                <div className="text-center md:mt-4 md:mb-0 mb-[90px]">
                   <h3>
                     Already have an account?{" "}
                     <a href="/login" className="text-[#608A7D] font-bold">

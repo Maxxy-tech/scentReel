@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
-import Navbar from "../home/Navbar";
+
 const Otp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [validInput, setIsValidInput] = useState(false);
@@ -117,7 +117,7 @@ const Otp = () => {
 
   return (
     <div className=" mt-[4px] w-full bg-[#f1f1]  ">
-      <h4 className="p-2 mt-6 text-center capitalize font-normal w-full font-serif text-[17px]">
+      <h4 className="text1">
         Enter Otp sent to your email here
       </h4>
 
@@ -134,7 +134,7 @@ const Otp = () => {
                 value={num}
                 autoComplete="off"
                 onChange={(e) => handleChange(e, index)}
-                className={`sm:w-[4rem]  w-[2rem] h-[3rem]  sm:h-[6rem] rounded text-center p-2 shadow-xl shadow-[#00000042] font-semibold text-[1rem] ${
+                className={`sm:w-[4rem] box w-[2rem] h-[3rem]  sm:h-[6rem] rounded text-center p-2 shadow-xl shadow-[#00000042] font-semibold text-[1rem] ${
                   validInput ? "border-green-500" : "border-red-500"
                 }`}
                 id={`otp-${index}`}
@@ -150,13 +150,13 @@ const Otp = () => {
         <h5 className="text-red-600 mt-10 text-center capitalize font-thin tracking-wide w-full">
           {isExpired ? (
             <p className="">token has expired
-             <button className="border-[1px] w-[100px] cursor-pointer  uppercase  m-2 bg-red-500 mt-[20px] text-white" onClick= {ResendOtp} >{isLoading ? <Spinner
+             <button className="border-[1px] w-[100px] cursor-pointer  uppercase  m-2 bg-blue-900 mt-[20px] text-white" onClick= {ResendOtp} >{isLoading ? <Spinner
                         color="green"
-                        className="h-8 w-6 text-center ml-[35%]  text-white"
-                      />:<p>click</p>} </button> to request another otp </p>
+                        className="small h-8 w-6 text-center ml-[35%]  text-white"
+                      />:<p>resend code</p>} </button>  </p>
           ) : (
             <p >
-          <span className="text-[22px] mr-2">otp   expires in</span>  <span className="text-[25px] font-extrabold">{minutes}</span> <span className="font-bold text-[20px] m-0 ">:</span>{" "}
+          <span className="text-[22px] mr-2 small">otp   expires in</span>  <span className="text-[25px] font-extrabold small">{minutes}</span> <span className="font-bold text-[20px] m-0 ">:</span>{" "}
               <span className="text-[25px] font-extrabold">{seconds.toString().padStart(2, "0")}</span>
             </p>
           )}
@@ -169,7 +169,9 @@ const Otp = () => {
         onClick={handleSubmit}
         disabled={isExpired}
       >
-        submit
+       {isLoading ? <Spinner
+                        color="green"
+                        className="h-8 w-6 text-center ml-[35%]  text-white" />: <p> submit </p>}
       </button>
     </div>
   );

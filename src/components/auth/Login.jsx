@@ -1,91 +1,93 @@
 import { useState, useEffect, useContext } from "react";
-import { Navigate } from "react-router-dom";
-import axios from "axios";
-import google from "../../assets/icons8-google-48.png";
-import facebook from "../../assets/tabler-icon-brand-facebook.png";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import axiosInstance from "../../api/axiosInstance"; // Import the axios instance with interceptors
+import axios from 'axios'
 import "./register.css";
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
-import Otp from "./Otp";
 import "../../index.css";
 import divImg from "../../assets/Gentleman.png";
 import vector1 from "../../assets/Vector 1 (3).png";
-import useAuth from "../../hooks/useAuth";
+
+import AuthContext from "../../context/Authprovider"; //
 import { UserContext } from "../../context/userContext";
 import { useAuthContext } from "../../context/useAuthContext";
-import AuthContext from "../../context/Authprovider";
 
 const Login = () => {
-  // State declaration
-  const { setAuth } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { setAuth } = useContext(AuthContext); // Use useContext to access AuthContext
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [Login, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-  const { dispatch } = useAuthContext();
+  // const { dispatch } = useAuthContext();
   const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
 
+  useEffect(()=>{
+   if (Login) {
+     console.log("Navigating to home page");
+     navigate("/", { state: { from: location }, replace: true });
+   }
+  },[Login,location,navigate])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const url = "https://scentreel-be.onrender.com/api/v1/auth/login";
+    const url = "auth/login";
     const payload = {
       email,
       password,
     };
 
     try {
-      const response = await axios.post(url, payload, {
+      const response = await axiosInstance.post(url, payload, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const user = response.data.data.user;
-      setIsLoading(false);
-      // const accessToken = response?.data?.accessToken;
-      dispatch({ type: "LOGIN", payload: user });
-      const roles = response?.data?.user?.role;
-      setAuth({ email, password, roles });
-      console.log(user);
-      response.status == 200 ? setIsLogin(true) : setIsLogin(false);
-      // Messages
-      console.log(response.data.message);
-      setMessage(response.data.message);
-      // localStorage.setItem("user", JSON.stringify(user));
 
-      setUser(user);
-    } catch (error) {
-      console.error(
-        error.response ? error.response.data.message : error.message
-      );
+      console.log("Login response:", response,response.status);
+
+      const user = response?.data.data.user;
+      const roles = response?.data.data.user.role;
+      const accessToken = response?.data.data.accessToken;
+
       setIsLoading(false);
+      // dispatch({ type: "LOGIN", payload: user });
+      setAuth({ email, roles, accessToken });
+
+      setMessage(response.data.message);
+      setUser(user); // Set the user context
+       console.log(response.status,user)
+      // Navigate to home page after successful login
+        setIsLogin(true)
+    } catch (error) {
+      setIsLoading(false);
+      console.log("Login error:", error);
       setMessage(
         error.response ? error.response.data.message : "An error occurred"
       );
     }
   };
 
-  {
-    isLogin ? <Navigate to="/home" /> : <Navigate to="/login" />;
-  }
-
   return (
     <div className="bg-[#608A7D] min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex-grow flex flex-col justify-center items-center px-4 sm:px-8 md:px-16 lg:px-24">
+      <div className="flex-grow flex flex-col mb-[100px] md:mt-[70px] justify-center items-center px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl mt-10 md:mt-0">
           <div className="hidden md:flex flex-col items-center md:w-1/2 lg:w-1/3">
-            <img src={vector1} className="w-full max-w-sm" alt="Vector" />
+            <img src={vector1} className="w-[400px] h-[500px]" alt="Vector" />
             <img
               src={divImg}
-              className="absolute h-full max-w-sm"
+              className="absolute w-[300px] left-[106px] mb-[190px] h-[500px]"
               alt="Gentleman"
             />
           </div>
@@ -122,21 +124,35 @@ const Login = () => {
                   required
                   className="w-full p-3 border border-[#608A7D] rounded"
                 />
+                <p className="w-full text-end text-[#2819ad] capitalize mt-4 mr-8 cursor-pointer hover:text-[#2e0f0f42]">
+                  <Link to="/forgot-pwd">Forgot password?</Link>
+                </p>
               </div>
               <div className="text-center">
                 <button
                   type="submit"
-                  className="bg-[#608A7D] text-white py-3 px-6 rounded uppercase"
+                  disabled={isLoading}
+                  className="bg-[#608A7D] text-white py-3 px-6 rounded capitalize"
                 >
-                  Sign in
+                  {isLoading ? "Signing in..." : "Sign in"}
                 </button>
               </div>
-              <p className="text-red-700 text-center mt-2">{message}</p>
+              {message && (
+                <p
+                  className={`text-center mt-2 ${
+                    message.includes("successful")
+                      ? "text-green-700"
+                      : "text-red-700"
+                  }`}
+                >
+                  {message}
+                </p>
+              )}
             </form>
           </div>
         </div>
       </div>
-      <Footer />
+      <Footer className="mt-[80px]" />
     </div>
   );
 };
