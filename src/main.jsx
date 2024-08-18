@@ -1,4 +1,3 @@
-// index.js
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -12,13 +11,14 @@ import Forum from "./components/forum/Forum";
 import Home from "./components/Home";
 import About from "./components/about/About";
 import Contact from "./components/contact/Contact";
+import Reset from "./components/auth/Reset";
 import ErrorPage from "./components/404";
 import { UserProvider } from "./context/userContext";
 import { AuthProvider } from "./context/Authprovider";
-// import {AuthContextProvider} from './context/authContext'
 import RequireAuth from "./components/RequiredAuth";
 import UserDashboard from "./pages/user/UserDashboard";
 import ForgotPwd from "./components/auth/ForgotPwd";
+import PersistLogin from "./components/auth/PersistLogin";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "login",
     element: <Login />,
+  },
+  {
+    path: "reset",
+    element: <Reset />,
   },
   {
     path: "signup",
@@ -51,19 +55,24 @@ const router = createBrowserRouter([
     element: <UserDashboard />,
   },
   {
-    element: <RequireAuth />, // Protected routes
+    element: <PersistLogin />,
     children: [
       {
-        path: "brand",
-        element: <Brand />,
-      },
-      {
-        path: "forum",
-        element: <Forum />,
-      },
-      {
-        path: "blog",
-        element: <Blog />,
+        element: <RequireAuth />, // Protected routes
+        children: [
+          {
+            path: "brand",
+            element: <Brand />,
+          },
+          {
+            path: "forum",
+            element: <Forum />,
+          },
+          {
+            path: "blog",
+            element: <Blog />,
+          },
+        ],
       },
     ],
   },
@@ -72,12 +81,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      {/* <AuthContextProvider> */}
       <UserProvider>
         <RouterProvider router={router} />
       </UserProvider>
-    {/* </AuthContextProvider> */}
     </AuthProvider>
-
   </React.StrictMode>
 );

@@ -1,28 +1,42 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 
-const AuthContext = createContext({});
+const AuthContext = createContext({
+  auth: null,
+  setAuth: () => {},
+});
 
 export const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
+  const [auth, setAuth] = useState(null);
 
   useEffect(() => {
-    const storedAuth = JSON.parse(localStorage.getItem("auth"));
-    if (storedAuth) {
-      setAuth(storedAuth);
+    try {
+      const storedAuth = JSON.parse(localStorage.getItem("auth"));
+      if (storedAuth) {
+        setAuth(storedAuth);
+      }
+    } catch (error) {
+      console.error("Failed to load authentication state from localStorage", error);
     }
   }, []);
 
   useEffect(() => {
-    if (auth) {
-      localStorage.setItem("auth", JSON.stringify(auth));
-    } else {
-      localStorage.removeItem("auth");
+    try {
+      if (auth) {
+        localStorage.setItem("auth", JSON.stringify(auth));
+      } else {
+        localStorage.removeItem("auth");
+      }
+    } catch (error) {
+      console.error("Failed to save authentication state to localStorage", error);
     }
   }, [auth]);
 
+  // Memoize the context value to prevent unnecessary re-renders
+  const contextValue = useMemo(() => ({ auth, setAuth }), [auth]);
+
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
-      {children }
+    <AuthContext.Provider value={contextValue}>
+      {children}
     </AuthContext.Provider>
   );
 };

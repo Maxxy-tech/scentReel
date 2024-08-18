@@ -1,58 +1,66 @@
+// src/api/axiosInstance.js
 import axios from "axios";
-import { getAuth, setAuth } from "./Token"; // Import the token service
 
-const axiosInstance = axios.create({
-  baseURL: "https://scentreel-be.onrender.com/api/v1",
+// Axios instance for non-authenticated requests
+export const axiosOrd = axios.create({
+  baseURL: "https://scentreel-be.onrender.com/",
 });
 
-axiosInstance.interceptors.request.use(
-  async (config) => {
-    let auth = getAuth();
-
-    if (!auth?.accessToken) {
-      try {
-        const response = await axios.get(
-          "/refresh-token",
-          { withCredentials: true }
-        );
-        setAuth(response.data);
-        auth = response.data;
-      } catch (error) {
-        return Promise.reject(error);
-      }
-    }
-
-    config.headers["Authorization"] = `Bearer ${auth.accessToken}`;
-    return config;
+// Axios instance for authenticated requests
+export const axiosInstance = axios.create({
+  baseURL: "https://scentreel-be.onrender.com/api/v1",
+  headers: {
+    "Content-Type": "application/json",
   },
-  (error) => Promise.reject(error)
-);
+  // withCredentials: true, // Include cookies in requests
+});
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        const response = await axios.get(
-          "users/refresh-token",
-          { withCredentials: true }
-        );
-        setAuth(response.data);
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${response.data.accessToken}`;
-        originalRequest.headers[
-          "Authorization"
-        ] = `Bearer ${response.data.accessToken}`;
-        return axiosInstance(originalRequest);
-      } catch (err) {
-        return Promise.reject(err);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
 
-export default axiosInstance;
+//   axiosInstance.interceptors.request.use(
+//   async (config) => {
+//     let auth = getAuth();
+
+//     if (!auth?.accessToken) {
+//       try {
+//         const response = await axios.get("/refresh-token", {
+//           withCredentials: true,
+//         });
+//         setAuth(response.data);
+//         auth = response.data;
+//       } catch (error) {
+//         return Promise.reject(error);
+//       }
+//     }
+
+//     config.headers["Authorization"] = `Bearer ${auth.accessToken}`;
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
+// axiosInstance.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+//     if (error.response.status === 401 && !originalRequest._retry) {
+//       originalRequest._retry = true;
+//       try {
+//         const response = await axios.get("/users/refresh-token", {
+//           withCredentials: true,
+//         });
+//         setAuth(response.data);
+//         axios.defaults.headers.common[
+//           "Authorization"
+//         ] = `Bearer ${response.data.accessToken}`;
+//         originalRequest.headers[
+//           "Authorization"
+//         ] = `Bearer ${response.data.accessToken}`;
+//         return axiosInstance(originalRequest);
+//       } catch (err) {
+//         return Promise.reject(err);
+//       }
+//     }
+//     return Promise.reject(error);
+//   }
+// );
+

@@ -5,16 +5,11 @@ import twitter from "../../assets/twitter.png";
 import linkedin from "../../assets/linkedin.png";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../context/userContext";
-import { useAuthContext } from "../../context/useAuthContext";
+import empty from "../../assets/Empty.png";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useContext(UserContext);
-  const [isLogin, setIsLogin] = useState(false);
-
-  useEffect(() => {
-    setIsLogin(!!user);
-  }, [user]);
+  const { user } = useContext(UserContext); // Getting the user from context
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -32,7 +27,7 @@ const Navbar = () => {
             reel
           </span>
         </div>
-        <div className="lg:hidden  px-6">
+        <div className="lg:hidden px-6">
           <button onClick={toggleMenu} className="text-3xl">
             &#9776;
           </button>
@@ -157,33 +152,45 @@ const Navbar = () => {
                 className="h-full w-full object-cover"
               />
             </li>
+            <li className="h-6 w-6 sm:ml-[800px] ml-40 md:w-10 md:h-10 flex items-center justify-center shadow-2xl shadow-black">
+              {user ? (
+                <div className="flex items-center">
+                  <NavLink
+                    to="/user-dashboard"
+                    className={({ isActive }) =>
+                      `p-4 hover:bg-[#222727c0] ${
+                        isActive ? "text-[#f1ab4f]" : "text-[#fff]"
+                      } rounded-lg hover:animate-pulse`
+                    }
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={user?.profileImageUrl || empty}
+                        className="w-[40px] h-[40px] rounded-full"
+                        alt={user?.username}
+                      />
+                      <h5 className="ml-2 text-[20px] capitalize">
+                        {user.username}
+                      </h5>
+                    </div>
+                  </NavLink>
+                </div>
+              ) : (
+                <div className="flex gap-2 sm:gap-10">
+                  <NavLink to="/login">
+                    <button className="bg-black text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-serif text-[#f0a645] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
+                      Login
+                    </button>
+                  </NavLink>
+                  <NavLink to="/signup">
+                    <button className="bg-white text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-semibold font-serif text-black hover:translate-y-1 hover:text-[#f1a31221] transition-all">
+                      Signup
+                    </button>
+                  </NavLink>
+                </div>
+              )}
+            </li>
           </ul>
-          {isLogin && user ? (
-            <div>
-              <p>
-                <NavLink
-                  to="/user-dashboard"
-                  className={({ isActive }) =>
-                    `p-4 hover:bg-[#222727c0] ${
-                      isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                    } rounded-lg hover:animate-pulse`
-                  }
-                >
-                {user.username || 'User'} is logged in
-                </NavLink>
-
-              </p>
-            </div>
-          ) : (
-            <div className="flex gap-2 sm:gap-10">
-              <button className="bg-black text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-serif text-[#f0a645] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
-                <NavLink to="/login">Login</NavLink>
-              </button>
-              <button className="bg-white text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-semibold font-serif text-black hover:translate-y-1 hover:text-[#f1a31221] transition-all">
-                <NavLink to="/signup">Signup</NavLink>
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>

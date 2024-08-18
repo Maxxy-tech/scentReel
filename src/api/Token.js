@@ -1,6 +1,6 @@
-// Token.js
 export const getAuth = () => {
-  return JSON.parse(localStorage.getItem("auth"));
+  const auth = localStorage.getItem("user");
+  return auth ? JSON.parse(auth) : null;
 };
 
 export const setAuth = (auth) => {

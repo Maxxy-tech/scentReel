@@ -1,0 +1,65 @@
+input{
+    Width:558px;
+    height:40px;
+    top:745px ;
+     left:608px;
+    border-radius:10px ;
+    border-style:outset;
+    border-color: #608A7D;
+
+}
+h1{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+label{
+    font:300;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: medium;
+    text-transform: capitalize;
+    margin-left: ;
+    padding:4px;
+}
+
+.submit {
+    width:fixed(60px);
+    height:fixed(40px);
+    top:1104px;
+    left:844px;
+    border-radius:10px;
+    padding:10px;
+    gap:10px;
+    background-color: #608A7D;
+    color: white;
+
+}
+
+.border{
+    border-color: #C7C7C7;
+;
+}
+
+/* For the visibility toggle button */
+.eye .eye{
+  position: absolute;
+  top: 50%;
+
+  bottom: px;
+  transform: translateY(-50%);
+  padding:2px;
+}
+
+/* To ensure the eye icons are visible */
+input[type='password'] + button img {
+  vertical-align: middle;
+}
+
+/* To manage visibility of notes */
+.visible {
+  display: block;
+}
+
+.offscreen {
+  position: absolute;
+  left: -9999px;
+}
