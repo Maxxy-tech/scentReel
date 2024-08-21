@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import "./index.css";
 import Layout from "./components/layout/Layout";
 import Login from "./components/auth/Login";
@@ -25,6 +25,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Home />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/home",
+    element: <Navigate to="/" />, // Redirect /home to /
   },
   {
     path: "login",

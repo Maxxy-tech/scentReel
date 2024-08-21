@@ -84,7 +84,7 @@ const Navbar = () => {
             ))}
           </ul>
           <div className="flex items-center">
-            {auth?.isAuthenticated ? (
+            {user ? (
               <NavLink
                 to="/user-dashboard"
                 className={({ isActive }) =>

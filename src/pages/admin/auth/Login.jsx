@@ -1,31 +1,30 @@
 import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-// import axiosInstance from "../../api/axiosInstance"; // Import the axios instance with interceptors
-
 import "./register.css";
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
 import "../../index.css";
 import divImg from "../../assets/Gentleman.png";
 import vector1 from "../../assets/Vector 1 (3).png";
-import useAxiosInstance from '../../hooks/useAxiosInstance'
-import AuthContext from "../../context/Authprovider"; //
+import useAxiosInstance from "../../hooks/useAxiosInstance";
+import AuthContext from "../../context/Authprovider";
 import { UserContext } from "../../context/userContext";
-// import { useAuthContext } from "../../context/useAuthContext";
+import eye from "../../../assets/icons8-eye-50.png";
+import eye2 from "../../../assets/icons8-hide-password-30.png";
 
 const Login = () => {
-  const axiosInstance=useAxiosInstance()
+  const axiosInstance = useAxiosInstance();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
-  const {auth, setAuth } = useContext(AuthContext); // Use useContext to access AuthContext
+  const { auth, setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [Login, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-  // const { dispatch } = useAuthContext();
+  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
   const { setUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -33,8 +32,7 @@ const Login = () => {
   }, [email, password]);
 
   useEffect(() => {
-    if (Login ) {
-      console.log("Navigating to home page");
+    if (Login) {
       navigate("/", { state: { from: location }, replace: true });
     }
   }, [Login, location, navigate]);
@@ -53,30 +51,22 @@ const Login = () => {
       const response = await axiosInstance.post(url, payload, {
         headers: {
           "Content-Type": "application/json",
-
         },
-        // withCredentials: true
       });
-
-      console.log("Login response:", response, response.status);
 
       const user = response?.data.data.user;
       const roles = response?.data.data.user.role;
       const accessToken = response?.data.data.accessToken;
 
-      navigate(from, {replace:true})
+      navigate(from, { replace: true });
       setIsLoading(false);
-      // dispatch({ type: "LOGIN", payload: user });
       setAuth({ email, roles, accessToken });
 
       setMessage(response.data.message);
-      setUser(user); // Set the user context
-      console.log(response.status, user);
-      // Navigate to home page after successful login
+      setUser(user);
       setIsLogin(true);
     } catch (error) {
       setIsLoading(false);
-      console.log("Login error:", error);
       setMessage(
         error.response ? error.response.data.message : "An error occurred"
       );
@@ -88,8 +78,12 @@ const Login = () => {
       <Navbar />
       <div className="flex-grow flex flex-col mb-[100px] md:mt-[70px] justify-center items-center px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl mt-10 md:mt-0">
-          <div className="hidden md:flex  md:w-1/2 lg:w-1/3">
-            <img src={vector1} className="w-[400px] left-1 h-[500px]" alt="Vector" />
+          <div className="hidden md:flex md:w-1/2 lg:w-1/3">
+            <img
+              src={vector1}
+              className="w-[400px] left-1 h-[500px]"
+              alt="Vector"
+            />
             <img
               src={divImg}
               className="absolute w-[300px] left-[106px] mb-[190px] h-[500px]"
@@ -114,7 +108,7 @@ const Login = () => {
                   className="w-full p-3 border border-[#608A7D] rounded"
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col relative">
                 <label
                   htmlFor="password"
                   className="text-left font-medium mb-2"
@@ -122,12 +116,18 @@ const Login = () => {
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full p-3 border border-[#608A7D] rounded"
+                  className="w-full p-3 border border-[#608A7D] rounded pr-12" // Add padding-right for the eye icon
+                />
+                <img
+                  src={showPassword ? eye : eye2}
+                  alt="Toggle password visibility"
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
                 />
                 <p className="w-full text-end text-[#2819ad] capitalize mt-4 mr-8 cursor-pointer hover:text-[#2e0f0f42]">
                   <Link to="/forgot-pwd">Forgot password?</Link>

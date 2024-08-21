@@ -9,16 +9,14 @@ const Home = () => {
     <div className="">
       <Hero />
 
-      <div className="flex  md:flex-row gap-6 h-[500px] ">
+      <div className="mt-[0.3%]">
+        <Feeds />
+      </div><div className="mt-[80px] w-full "><h2 className="text-[30px] text-center capitalize ">fragrance of the week</h2></div>
+      <div className="lg:flex  lg:flex-row gap-6 w-[100vw]  ">
 
-          <div className="w-1/2"><Scent /></div>
-          <Poll />
-
-
-
+        <Scent />
+        <Poll />
       </div>
-     <div className="mt-[30%]">
-      <Feeds /></div>
 
       <Footer />
     </div>

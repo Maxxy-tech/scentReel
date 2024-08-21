@@ -5,7 +5,7 @@ import img from "../../assets/Things To Keep In Mind While Buying Fragrance For 
 
 const Scent = () => {
   return (
-    <div className="relative m-4 md:m-8 lg:m-12 mt-[4rem] ">
+    <div className="relative m-4 md:m-8 lg:m-12 mt-[4rem] w-[458.57px]">
       <img
         src={vector1}
         className="w-[100%] h-[30rem] lg:h-[40rem] max-w-4xl text-[#608A7D]"
@@ -25,6 +25,16 @@ const Scent = () => {
           />
         </div>
       </div>
+      <div className="w-full"><h4 className="text-[23px] capitalize font-bold w-[323px]">david beckham instinct</h4>
+      <p className="mt-8">
+        Instinct by David Beckham is a Aromatic Fougere fragrance for men.
+        Instinct was launched in 2005. Instinct was created by Beatrice Piquet
+        and Alain Astori. Conveying a lively sense of dynamism, this captivating
+        masculine fougère citrus perfume is inspired by David's authentic and
+        charismatic personality. The vibrant scent opens with a flash of zesty
+        freshness thanks to a bright note of bergamot.
+      </p></div>
+
     </div>
   );
 };
