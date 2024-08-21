@@ -22,7 +22,7 @@ import PersistLogin from "./components/auth/PersistLogin";
 
 const router = createBrowserRouter([
   {
-    path: "/home",
+    path: "/",
     element: <Home />,
     errorElement: <ErrorPage />,
   },

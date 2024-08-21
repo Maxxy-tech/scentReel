@@ -5,11 +5,13 @@ import instagram from "../../assets/instagram.png";
 import twitter from "../../assets/twitter.png";
 import linkedin from "../../assets/linkedin.png";
 import empty from "../../assets/Empty.png";
-import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../context/userContext"; // For accessing user data
+import  AuthContext  from "../../context/Authprovider"; // For accessing auth state
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { user } = useContext(UserContext); // Getting the user from context
+  const { user } = useContext(UserContext); // Accessing user from context
+  const { auth } = useContext(AuthContext); // Accessing auth state from context
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -82,7 +84,7 @@ const Navbar = () => {
             ))}
           </ul>
           <div className="flex items-center">
-            {user ? (
+            {auth?.isAuthenticated ? (
               <NavLink
                 to="/user-dashboard"
                 className={({ isActive }) =>
