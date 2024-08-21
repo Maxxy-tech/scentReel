@@ -85,7 +85,7 @@ const Post = ({ fetchPosts }) => {
           <img
             src={post.author.profileImageUrl}
             alt={`${post.author.username}'s profile`}
-            className="w-12 h-12 rounded-full"
+            className="w-[58px] h-[58px] rounded-full"
           />
           <h3 className="text-xl font-semibold">{post.author.fullName}</h3>
           <p className="text-gray-500">@{post.author.username}</p>

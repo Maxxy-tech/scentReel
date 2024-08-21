@@ -6,10 +6,10 @@ import img from "../../assets/Empty.png";
 import heart1 from "../../assets/icons8-heart-24.png";
 import heart2 from "../../assets/icons8-heart-30.png";
 import moon from "../../assets/icons8-moon-30.png";
-import retweet from "../../assets/icons8-moon-30.png";
-import comment from "../../assets/icons8-heart-24.png";
+import retweet from "../../assets/Default.png";
+import comment from "../../assets/icons8-comment-50.png";
 import { UserContext } from "../../context/userContext";
-
+import Navbar from '../home/Navbar'
 const Forum = () => {
   const axiosInstance = useAxiosInstance();
   const { user } = useContext(UserContext);
@@ -20,40 +20,58 @@ const Forum = () => {
   const [showCommentInput, setShowCommentInput] = useState({});
   const [singleComment, setSingleComment] = useState(null);
 
+  useEffect(() => {
+    fetchPosts();
+  }, [axiosInstance]);
+
+  useEffect(() => {
+    const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
+    if (savedDarkMode !== null) {
+      setDarkMode(savedDarkMode);
+    }
+  }, []);
+
   const fetchPosts = async () => {
     try {
       const response = await axiosInstance.get("forum/posts");
       const fetchedPosts = response.data.data || [];
       setPosts(fetchedPosts);
-
-      const initialStates = fetchedPosts.map(post => ({
-        likes: 0,
-        liked: false,
-        showMore: false,
-      }));
-      setPostStates(initialStates);
-
-      setShowCommentInput(fetchedPosts.reduce((acc, post) => {
-        acc[post._id] = false;
-        return acc;
-      }, {}));
-
-      setComments(fetchedPosts.reduce((acc, post) => {
-        acc[post._id] = [];
-        return acc;
-      }, {}));
+      initializePostStates(fetchedPosts);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, [axiosInstance]);
+  const initializePostStates = (fetchedPosts) => {
+    const initialStates = fetchedPosts.map((post) => ({
+      likes: post.likes,
+      liked: false,
+      showMore: post.content.length > 100,
+      comments: post.comments.length,
+      moreContent: post.content.length > 100 ? post.content.slice(100) : "",
+    }));
+    setPostStates(initialStates);
+
+    setShowCommentInput(
+      fetchedPosts.reduce((acc, post) => {
+        acc[post._id] = false;
+        return acc;
+      }, {})
+    );
+
+    setComments(
+      fetchedPosts.reduce((acc, post) => {
+        acc[post._id] = [];
+        return acc;
+      }, {})
+    );
+  };
 
   const fetchComments = async (postId) => {
     try {
-      const response = await axiosInstance.get(`forum/posts/${postId}/comments`);
+      const response = await axiosInstance.get(
+        `forum/posts/${postId}/comments`
+      );
       return response.data.data || [];
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -64,7 +82,7 @@ const Forum = () => {
   const fetchCommentById = async (commentId) => {
     try {
       const response = await axiosInstance.get(`forum/comments/${commentId}`);
-      setSingleComment(response.data.data); // Store the fetched comment in state
+      setSingleComment(response.data.data);
     } catch (error) {
       console.error("Error fetching single comment:", error);
     }
@@ -73,49 +91,50 @@ const Forum = () => {
   const handleCommentButtonClick = async (postId) => {
     if (!showCommentInput[postId]) {
       const fetchedComments = await fetchComments(postId);
-      setComments(prevComments => ({
+      setComments((prevComments) => ({
         ...prevComments,
         [postId]: fetchedComments,
       }));
     }
 
-    setShowCommentInput(prev => ({
+    setShowCommentInput((prev) => ({
       ...prev,
       [postId]: !prev[postId],
     }));
   };
 
-  const handleAddComment = (postId, commentText, parentId = null) => {
+  const handleAddComment = async (postId, commentText, parentId = null) => {
     const newComment = {
-      id: Date.now(),
       author: user,
       content: commentText,
-      replies: [],
       parentId,
-      date: new Date().toLocaleString(),
     };
 
-    setComments(prevComments => {
-      const postComments = prevComments[postId] || [];
-      return {
-        ...prevComments,
-        [postId]: parentId
-          ? postComments.map(comment =>
-              comment.id === parentId
-                ? { ...comment, replies: [...comment.replies, newComment] }
-                : comment
-            )
-          : [...postComments, newComment],
-      };
-    });
-  };
+    try {
+      const response = await axiosInstance.post(
+        `/forum/posts/${postId}/comments`,
+        newComment
+      );
 
-  useEffect(() => {
-    const savedDarkMode = JSON.parse(localStorage.getItem('darkMode'));
-    if (savedDarkMode !== null) {
-      setDarkMode(savedDarkMode);
+      // If the comment was successfully added to the backend, update the state
+      const savedComment = response.data.data;
+      setComments((prevComments) => {
+        const postComments = prevComments[postId] || [];
+        return {
+          ...prevComments,
+          [postId]: parentId
+            ? postComments.map((comment) =>
+                comment.id === parentId
+                  ? { ...comment, replies: [...comment.replies, savedComment] }
+                  : comment
+              )
+            : [...postComments, savedComment],
+        };
+      });
+    } catch (error) {
+      console.error("Error adding comment:", error);
     }
-  }, []);
+  };
 
   const handleLike = async (index) => {
     const updatedStates = [...postStates];
@@ -138,93 +157,138 @@ const Forum = () => {
   };
 
   return (
-    <div className={darkMode ? "bg-gray-900 text-white min-h-screen" : "bg-gray-100 text-black min-h-screen"}>
+    <div
+      className={`min-h-screen ${
+        darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+      }`}
+    >
+      <Navbar />
       <Post fetchPosts={fetchPosts} />
       <div className="text-center mt-6">
-        <h1 className="font-sans font-extrabold text-[1.2rem] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#f0cd0b] to-black">Forum</h1>
+        <h1 className="font-sans font-extrabold text-[1.2rem] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#f0cd0b] to-black">
+          Forum
+        </h1>
         <hr className="border-b-2 border-black mx-auto w-20 my-2" />
         <img
           src={moon}
           onClick={() => {
             setDarkMode(!darkMode);
-            localStorage.setItem('darkMode', !darkMode);
+            localStorage.setItem("darkMode", !darkMode);
           }}
           className="bg-transparent mt-4 px-4 py-2 rounded fixed text-white cursor-pointer"
           alt="Toggle Dark Mode"
         />
       </div>
 
-      <div className={darkMode ? "w-full h-auto bg-gray-800 p-4" : "w-full h-auto bg-white p-4"}>
+      <div
+        className={`w-full h-auto  ${darkMode ? "bg-gray-800" : "bg-white"}`}
+      >
         {posts.map((post, index) => (
-          <div key={post._id} className={darkMode ? "bg-gray-700 shadow-md rounded-lg p-4 mx-4 sm:mx-8 md:mx-16 lg:mx-32 my-4 border border-gray-600" : "bg-white text-center p-4 mx-4 sm:mx-8 md:mx-16 lg:mx-32 my-4"}>
+          <div
+            key={post._id}
+            className={`p-2 mx-4 sm:mx-8 md:mx-16 lg:mx-32 my-4 shadow-sm  ${
+              darkMode ? "bg-gray-700 border border-gray-600" : "bg-white"
+            }`}
+          >
             <div className="flex items-start">
               <img
                 className="rounded-full w-[58px] h-[58px] object-cover shadow-lg"
                 src={post.author.profileImageUrl || img}
-                alt="User profile image"
+                alt="User profile"
               />
               <div className="ml-4 flex-1">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h5 className="font-[600] text-[14px] leading-[21px] text-base">
+                    <h5 className="font-[600] text-[14px] leading-[21px]">
                       {post.author.fullName}
-                      <span className="text-sm text-gray-500 ml-2">@{post.author.username}</span>
+                      <span className="text-sm text-gray-500 ml-2">
+                        @{post.author.username}
+                      </span>
                     </h5>
-                    <span className="text-xs text-gray-500">{post.formattedTime}</span>
+                    <span className="text-xs text-gray-500">
+                      {post.formattedTime}
+                    </span>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500">{post.date}</p>
-                  </div>
+                  <p className="text-xs text-gray-500">{post.date}</p>
                 </div>
-                <p className={darkMode ? "mt-2 text-gray-300 text-sm" : "mt-2 text-gray-700 text-sm"}>
-                  {post.content}
-                  {postStates[index].showMore ? post.moreContent : ""}
-                </p>
-                <button
-                  onClick={() => setPostStates(prevStates =>
-                    prevStates.map((state, idx) =>
-                      idx === index ? { ...state, showMore: !state.showMore } : state
-                    )
-                  )}
-                  className="text-blue-500 text-sm"
+                <p
+                  className={`mt-2 text-sm ${
+                    darkMode ? "text-gray-300" : "text-gray-700"
+                  }`}
                 >
-                  {postStates[index].showMore ? "Read Less" : "Read More"}
-                </button>
-                <div className="mt-4 flex justify-end gap-[30px] text-gray-500">
-                  <div className="flex items-center space-x-1 cursor-pointer" onClick={() => handleLike(index)}>
-                    <img className="hover:translate-y-[-2px]" src={postStates[index].liked ? heart2 : heart1} alt="like button" />
+                  {postStates[index].showMore
+                    ? post.content + post.moreContent
+                    : post.content.slice(0, 100)}
+                  {post.content.length > 100 && (
+                    <button
+                      onClick={() =>
+                        setPostStates((prevStates) =>
+                          prevStates.map((state, idx) =>
+                            idx === index
+                              ? { ...state, showMore: !state.showMore }
+                              : state
+                          )
+                        )
+                      }
+                      className="text-blue-500 text-sm ml-1"
+                    >
+                      {postStates[index].showMore ? "Read Less" : "Read More"}
+                    </button>
+                  )}
+                </p>
+                <div className="mt-4 flex justify-around gap-[30px] text-gray-500">
+                  <div
+                    className="flex items-center space-x-1 cursor-pointer"
+                    onClick={() => handleLike(index)}
+                  >
+                    <img
+                      className="hover:translate-y-[-2px]"
+                      src={
+                        postStates[index].liked || postStates[index].likes > 0
+                          ? heart2
+                          : heart1
+                      }
+                      alt="like"
+                    />
                     <span className="text-sm">{postStates[index].likes}</span>
                   </div>
                   <div className="flex items-center space-x-1 cursor-pointer">
-                    <img src={retweet} className="hover:translate-y-[-2px]" alt="retweet button" />
+                    <img
+                      src={retweet}
+                      className="hover:translate-y-[-2px]"
+                      alt="retweet"
+                    />
                     <span className="text-sm">0</span>
                   </div>
-                  <div className="flex items-center space-x-1 cursor-pointer" onClick={() => handleCommentButtonClick(post._id)}>
-                    <img className="w-6 hover:translate-y-[-2px]" src={comment} alt="comment button" />
-                    <span className="text-sm">{comments[post._id]?.length || 0}</span>
+                  <div
+                    className="flex items-center space-x-1 cursor-pointer"
+                    onClick={() => handleCommentButtonClick(post._id)}
+                  >
+                    <img
+                      className="w-6 hover:translate-y-[-2px]"
+                      src={comment}
+                      alt="comment"
+                    />
+                    <span className="text-sm">
+                      {postStates[index].comments}
+                    </span>
                   </div>
                 </div>
+
                 {showCommentInput[post._id] && (
                   <CommentList
                     postId={post._id}
                     comments={comments[post._id]}
                     handleAddComment={handleAddComment}
+                    darkMode={darkMode}
+                    fetchCommentById={fetchCommentById}
+                    singleComment={singleComment}
                   />
                 )}
               </div>
             </div>
           </div>
         ))}
-        {/* Render the single comment if it's fetched */}
-        {singleComment && (
-          <div className="single-comment">
-            <h4>Single Comment:</h4>
-            <p>{singleComment.content}</p>
-            <small>By {singleComment.author.fullName} (@{singleComment.author.username})</small>
-            <br />
-            <small>{singleComment.date}</small>
-          </div>
-        )}
       </div>
     </div>
   );

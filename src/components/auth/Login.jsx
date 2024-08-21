@@ -88,13 +88,24 @@ const Login = () => {
       <Navbar />
       <div className="flex-grow flex flex-col mb-[100px] md:mt-[70px] justify-center items-center px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl mt-10 md:mt-0">
-          <div className="hidden md:flex flex-col items-center md:w-1/2 lg:w-1/3">
-            <img src={vector1} className="w-[400px] h-[500px]" alt="Vector" />
-            <img
-              src={divImg}
-              className="absolute w-[300px] left-[106px] mb-[190px] h-[500px]"
-              alt="Gentleman"
-            />
+          <div className="hidden md:hidden lg:flex sm:flex w-full sm:w-1/3 relative">
+            <div className="relative w-full sm:w-[328.37px]   rounded-[380px] h-[511.12px] mt-10 ">
+              <div className="w-[558.57px] ">
+                {" "}
+                <img
+                  src={vector1}
+                  className="absolute w-[458.57px] left-[15px] border-[5px] border-transparent h-[508px]"
+                  alt=""
+                />
+              </div>
+              <div className="h-[600.64px] top-[517px] w-[411.95px]  rounded-[300px]  rotate-[-1.61]">
+                <img
+                  src={divImg}
+                  className="absolute h-[500.64px] left-8  top-[2px] w-[311.95px]  rounded-[300px] rotate-[178.39]"
+                  alt=""
+                />
+              </div>
+            </div>
           </div>
           <div className="bg-white w-full md:w-1/2 lg:w-2/3 p-6 md:p-8 lg:p-10 border border-[#608A7D] rounded-2xl">
             <h1 className="text-center text-2xl font-bold uppercase mb-6">

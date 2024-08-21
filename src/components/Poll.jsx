@@ -1,8 +1,7 @@
-import { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Bar } from "react-chartjs-2";
 import { UserContext } from "../context/userContext";
 import { getVotes, postVote } from "./Votes";
-import Scent from './home/Scent'
 import {
   Chart as ChartJS,
   BarElement,
@@ -21,7 +20,6 @@ const Poll = () => {
     { count: 30, voters: [] },
     { count: 40, voters: [] },
     { count: 50, voters: [] },
-
   ]);
   const { user } = useContext(UserContext);
   const [hasVoted, setHasVoted] = useState(false);
@@ -54,15 +52,14 @@ const Poll = () => {
   const handleVote = async (index) => {
     const userId = user?._id;
 
-
     if (userId && !hasVoted) {
       try {
-        const voteData = [index,userId,];
+        const voteData = [index, userId];
 
         await postVote(voteData);
 
-        const newVotes = votes.map((vote,idx) => {
-          if (index ===idx) {
+        const newVotes = votes.map((vote, idx) => {
+          if (index === idx) {
             return {
               count: vote.count + 1,
               voters: [...vote.voters, userId],
@@ -85,7 +82,6 @@ const Poll = () => {
       "Performance 3",
       "Performance 4",
       "Performance 5",
-
     ],
     datasets: [
       {
@@ -96,49 +92,55 @@ const Poll = () => {
           "rgba(54, 162, 235, 1.2)",
           "rgba(255, 206, 86, 1.2)",
           "rgba(75, 192, 192, 1.2)",
+          "rgba(153, 102, 255, 1.2)",
         ],
         borderColor: [
           "rgba(255, 99, 132, 1.2)",
           "rgba(54, 162, 235, 1.2)",
           "rgba(255, 206, 86, 1.2)",
           "rgba(75, 192, 192, 1.2)",
+          "rgba(153, 102, 255, 1.2)",
         ],
         borderWidth: 1,
-        barThickness: 90,
-        responsive: true,
+        barThickness: 'flex', // Adjust bar thickness for better visibility
+        maxBarThickness: 80, // Set a max thickness to avoid overly wide bars on large screens
       },
     ],
   };
 
   const options = {
+    maintainAspectRatio: false, // Allow the chart to resize properly
+    responsive: true,
     scales: {
       y: {
-        beginAtZero: 100,
+        beginAtZero: true,
       },
     },
   };
 
   return (
-    <div className="md:p-9 w-full h-full md:m-10">
-      <div className="md:flex md:gap-[20px]  w-full">
-        <Scent />
-        <div className="w-2/3 ">
-          <Bar data={data} options={options} className="h-[800px]" />
+    <div className="p-4 w-full md:p-9 md:m-10">
+      <div className="grid  ">
+        <div className="w-full md:h-full h-[300px] md:h-[500px] lg:h-[700px]">
+          <Bar data={data} options={options} className="h-full w-full" />
         </div>
-      </div>
-      <div className="grid md:flex grid-cols-2 ml-[42%] mt-8 gap-6  mb-4 md:grid-cols-4">
-        {votes.map((vote, index) => (
-          <div key={index} className="text-center">
-            <button
-              className="border-[#d8cd36]  border-[2px] text-[black] cursor-pointer rounded-lg p-1 w-[100px] h-[32px] radius-[10px]"
-              onClick={() => handleVote(index)}
-              aria-label={`Vote for Performance ${index + 1}`}
-              disabled={hasVoted || !user}
-            >
-              {index + 1}
-            </button>
+        <div className="w-full flex flex-col justify-center">
+          <div className=" flex ml-[12em] mt-4 gap-8 ">
+            {votes.map((vote, index) => (
+              <div key={index} className="text-center">
+                <button
+                  className="rounded-full border-none text-[black] cursor-pointer p-1 w-[30px] h-[30px] shadow-[8px_8px_16px_#bebebe,_-8px_-8px_16px_#ffffff] radius-[10px]"
+                  style={{ backgroundColor: data.datasets[0].backgroundColor[index] }}
+                  onClick={() => handleVote(index)}
+                  aria-label={`Vote for Performance ${index + 1}`}
+                  disabled={hasVoted || !user}
+                >
+                  {index + 1}
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );

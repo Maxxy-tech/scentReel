@@ -1,11 +1,11 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
+import { NavLink } from "react-router-dom";
 import facebook from "../../assets/facebook.png";
 import instagram from "../../assets/instagram.png";
 import twitter from "../../assets/twitter.png";
 import linkedin from "../../assets/linkedin.png";
-import { NavLink } from "react-router-dom";
-import { UserContext } from "../../context/userContext";
 import empty from "../../assets/Empty.png";
+import { UserContext } from "../../context/userContext";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -39,78 +39,22 @@ const Navbar = () => {
           aria-label="main"
         >
           <ul className="lg:flex lg:p-2 lg:mr-10 lg:space-x-8 lg:mt-0 p-8 uppercase font-semibold sm:ml-auto">
-            <li className="p-2">
-              <NavLink
-                to="/"
-                className={({ isActive }) =>
-                  `p-4 hover:bg-[#222727c0] ${
-                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse`
-                }
-              >
-                Home
-              </NavLink>
-            </li>
-            <li className="p-2">
-              <NavLink
-                to="/brand"
-                className={({ isActive }) =>
-                  `p-4 hover:bg-[#2227275d] ${
-                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse`
-                }
-              >
-                Brand
-              </NavLink>
-            </li>
-            <li className="p-2">
-              <NavLink
-                to="/about"
-                className={({ isActive }) =>
-                  `p-4 hover:bg-[#2227275d] ${
-                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse`
-                }
-              >
-                About
-              </NavLink>
-            </li>
-            <li className="p-2">
-              <NavLink
-                to="/blog"
-                className={({ isActive }) =>
-                  `p-4 hover:bg-[#2227275d] ${
-                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse`
-                }
-              >
-                Blog
-              </NavLink>
-            </li>
-            <li className="p-2">
-              <NavLink
-                to="/contact"
-                className={({ isActive }) =>
-                  `p-4 hover:bg-[#2227275d] ${
-                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse`
-                }
-              >
-                Contact
-              </NavLink>
-            </li>
-            <li className="p-2">
-              <NavLink
-                to="/forum"
-                className={({ isActive }) =>
-                  `p-4 hover:bg-[#2227275d] ${
-                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                  } rounded-lg hover:animate-pulse`
-                }
-              >
-                Forum
-              </NavLink>
-            </li>
+            {["Home", "Brand", "About", "Blog", "Contact", "Forum"].map(
+              (item, index) => (
+                <li key={index} className="p-2">
+                  <NavLink
+                    to={`/${item.toLowerCase()}`}
+                    className={({ isActive }) =>
+                      `p-4 hover:bg-[#222727c0] ${
+                        isActive ? "text-[#f1ab4f]" : "text-[#fff]"
+                      } rounded-lg hover:animate-pulse`
+                    }
+                  >
+                    {item}
+                  </NavLink>
+                </li>
+              )
+            )}
           </ul>
         </nav>
       </div>
@@ -122,75 +66,53 @@ const Navbar = () => {
 
       {/* Social and Action Buttons */}
       <div className="bg-[#ffffff1f]">
-        <div className="p-4 flex justify-between gap-8 items-center">
+        <div className="p-4 flex justify-between items-center">
           <ul className="flex gap-1 sm:gap-5">
-            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
-              <img
-                src={facebook}
-                alt="Facebook"
-                className="h-full w-full object-cover"
-              />
-            </li>
-            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
-              <img
-                src={instagram}
-                alt="Instagram"
-                className="h-full w-full object-cover"
-              />
-            </li>
-            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
-              <img
-                src={twitter}
-                alt="Twitter"
-                className="h-full w-full object-cover"
-              />
-            </li>
-            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
-              <img
-                src={linkedin}
-                alt="LinkedIn"
-                className="h-full w-full object-cover"
-              />
-            </li>
-            <li className="h-6 w-6 sm:ml-[800px] ml-40 md:w-10 md:h-10 flex items-center justify-center shadow-2xl shadow-black">
-              {user ? (
-                <div className="flex items-center">
-                  <NavLink
-                    to="/user-dashboard"
-                    className={({ isActive }) =>
-                      `p-4 hover:bg-[#222727c0] ${
-                        isActive ? "text-[#f1ab4f]" : "text-[#fff]"
-                      } rounded-lg hover:animate-pulse`
-                    }
-                  >
-                    <div className="flex items-center">
-                      <img
-                        src={user?.profileImageUrl || empty}
-                        className="w-[40px] h-[40px] rounded-full"
-                        alt={user?.username}
-                      />
-                      <h5 className="ml-2 text-[20px] capitalize">
-                        {user.username}
-                      </h5>
-                    </div>
-                  </NavLink>
-                </div>
-              ) : (
-                <div className="flex gap-2 sm:gap-10">
-                  <NavLink to="/login">
-                    <button className="bg-black text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-serif text-[#f0a645] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
-                      Login
-                    </button>
-                  </NavLink>
-                  <NavLink to="/signup">
-                    <button className="bg-white text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-semibold font-serif text-black hover:translate-y-1 hover:text-[#f1a31221] transition-all">
-                      Signup
-                    </button>
-                  </NavLink>
-                </div>
-              )}
-            </li>
+            {[facebook, instagram, twitter, linkedin].map((icon, index) => (
+              <li
+                key={index}
+                className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black"
+              >
+                <img
+                  src={icon}
+                  alt={icon.split("/").pop().split(".")[0]} // Extract the name from the file path
+                  className="h-full w-full object-cover"
+                />
+              </li>
+            ))}
           </ul>
+          <div className="flex items-center">
+            {user ? (
+              <NavLink
+                to="/user-dashboard"
+                className={({ isActive }) =>
+                  `p-4 hover:bg-[#222727c0] ${
+                    isActive ? "text-[#f1ab4f]" : "text-[#fff]"
+                  } rounded-lg hover:animate-pulse flex items-center`
+                }
+              >
+                <img
+                  src={user?.profileImageUrl || empty}
+                  className="w-[40px] h-[40px] rounded-full"
+                  alt={user?.username}
+                />
+                <h5 className="ml-2 text-[20px] capitalize">{user.username}</h5>
+              </NavLink>
+            ) : (
+              <div className="flex gap-2 sm:gap-10">
+                <NavLink to="/login">
+                  <button className="bg-black text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-serif text-[#f0a645] hover:translate-y-1 hover:text-[#f1a31221] transition-all">
+                    Login
+                  </button>
+                </NavLink>
+                <NavLink to="/signup">
+                  <button className="bg-white text-xs sm:text-sm uppercase w-20 sm:w-24 h-8 sm:h-10 font-semibold font-serif text-black hover:translate-y-1 hover:text-[#f1a31221] transition-all">
+                    Signup
+                  </button>
+                </NavLink>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

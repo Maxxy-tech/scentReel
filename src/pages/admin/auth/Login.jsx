@@ -88,8 +88,8 @@ const Login = () => {
       <Navbar />
       <div className="flex-grow flex flex-col mb-[100px] md:mt-[70px] justify-center items-center px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl mt-10 md:mt-0">
-          <div className="hidden md:flex flex-col items-center md:w-1/2 lg:w-1/3">
-            <img src={vector1} className="w-[400px] h-[500px]" alt="Vector" />
+          <div className="hidden md:flex  md:w-1/2 lg:w-1/3">
+            <img src={vector1} className="w-[400px] left-1 h-[500px]" alt="Vector" />
             <img
               src={divImg}
               className="absolute w-[300px] left-[106px] mb-[190px] h-[500px]"

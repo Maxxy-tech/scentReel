@@ -20,7 +20,7 @@ const Comment = ({ comment, onReply }) => {
           <img
             src={comment.author.profileImageUrl || "/default-avatar.png"}
             alt="Profile"
-            className="w-8 h-8 rounded-full mr-2"
+            className="w-[58px] h-[58px] rounded-full mr-2"
           />
           <div>
             <p className="text-sm font-semibold">
