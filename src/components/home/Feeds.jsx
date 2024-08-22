@@ -68,9 +68,7 @@ const Feeds = () => {
         darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
       } p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 relative`}
     >
-      <h1 className="font-sans text-center w-full mb-10 font-extrabold text-[1.2rem] uppercase text-transparent bg-clip-text bg-gradient-to-r from-[#f0cd0b] to-black">
-        Forum
-      </h1>
+     
       {lastSixPosts.length > 0 ? (
         lastSixPosts.map((post, index) => (
           <div

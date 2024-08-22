@@ -24,7 +24,7 @@ label {
 
 /* Submit button */
 .submit {
-    width: 100%; /* Adjust button width to fit its container */
+    width: 30%; /* Adjust button width to fit its container */
     height: 40px;
     border-radius: 10px;
     padding: 10px;
@@ -42,7 +42,7 @@ label {
 .eye {
     position: absolute;
     top: 50%;
-    right: 16%; /* Adjusted to be near the right side */
+    right: 30%; /* Adjusted to be near the right side */
     transform: translateY(-50%);
     padding: 2px;
 }

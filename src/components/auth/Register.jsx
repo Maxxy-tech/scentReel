@@ -40,8 +40,8 @@ const InputField = ({
   note,
   noteVisible,
 }) => (
-  <div className="p-3 sm:ml-10 relative">
-    <label className="flex capitalize sm:p-3">
+  <div className="   relative">
+    <label className="flex w-full capitalize ">
       <h4>{label}</h4>
     </label>
     <div className="relative">
@@ -182,20 +182,20 @@ const Signup = () => {
     <div className="bg-[#608A7D] box-content w-full min-h-screen ]">
       <Navbar />
       <div className="flex flex-col sm:flex-row p-4 sm:p-20  mt-[20px] justify-center items-center">
-        <div className="hidden md:hidden lg:flex sm:flex w-full sm:w-1/3 relative">
+        <div className="hidden ml-[1] -right-[10%] md:hidden lg:flex sm:flex w-full sm:w-1/3 relative">
           <div className="relative w-full sm:w-[428.37px]   rounded-[380px] h-[611.12px] mt-10 ">
             <div className="w-[458.57px] ">
               {" "}
               <img
                 src={vector1}
-                className="absolute w-[458.57px] left-[-50px] border-[5px] border-transparent h-[608px]"
+                className="absolute w-[358.57px] left-[-50px] border-[5px] border-transparent h-[408px]"
                 alt=""
               />
             </div>
-            <div className="h-[600.64px] top-[517px] w-[411.95px] bg-[#F5AFAF] rounded-[300px]  rotate-[-1.61]">
+            <div className="h-[400.64px] top-[517px] w-[211.95px] bg-[#F5AFAF] rounded-[300px]  rotate-[-1.61]">
               <img
                 src={divImg}
-                className="absolute h-[600.64px] left-[32px] top-[2px] w-[411.95px] bg-[#F5AFAF] rounded-[300px] rotate-[178.39]"
+                className="absolute h-[400.64px] left-[32px] top-[2px] w-[211.95px] bg-[#F5AFAF] rounded-[300px] rotate-[178.39]"
                 alt=""
               />
             </div>
@@ -299,11 +299,11 @@ const Signup = () => {
                   note="4 to 24 characters. Must begin with a letter. Letters, numbers, underscores, hyphens allowed."
                   noteVisible={userFocus && username && !validName}
                 />
-                <div className=" justify-center w-full mb-4">
+                <div className=" justify-center mb-4">
                   <button
                     onClick={handleSubmit}
                     disabled={isButtonDisabled}
-                    className={`rounded capitalize submit border p-2 bg-[#608A7D] text-white text-center md:ml-[35%] submit w-full md:w-[100px] sm:w-[100px] h-10 ${
+                    className={`rounded capitalize submit border p-2 bg-[#608A7D] text-white text-center ml-[5%] submit w-20 h-10 ${
                       isButtonDisabled
                         ? "opacity-50 not-submit cursor-not-allowed"
                         : ""
@@ -323,16 +323,21 @@ const Signup = () => {
                     className={errMsg ? "hidden" : "flex text-red-500 "}
                     aria-live="assertive"
                   >
-                   <p className="text-center  w-full mt-6">{errMsg} {message}</p>
+                    <p className="text-center  w-full mt-6">
+                      {errMsg} {message}
+                    </p>
                   </p>
-                </div>
-                <div className="text-center md:mt-4 md:mb-0 mb-[90px]">
-                  <h3>
-                    Already have an account?{" "}
-                    <a href="/login" className="text-[#608A7D] font-bold">
-                      Login here
-                    </a>
-                  </h3>
+                  <div className="text-center md:mt-4 mt-0 md:mb-0 mb-[190px] ">
+                    <h3>
+                      Already have an account?{" "}
+                      <a
+                        href="/login"
+                        className="text-[#3a059c] font-bold hover:bg-slate-900"
+                      >
+                        Login here
+                      </a>
+                    </h3>
+                  </div>
                 </div>
               </section>
             </div>

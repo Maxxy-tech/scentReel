@@ -37,7 +37,7 @@ const InputField = ({
   note,
   noteVisible,
 }) => (
-  <div className="p-3 sm:ml-10 relative">
+  <div className="p-3 relative">
     <label className="flex capitalize sm:p-3">
       <h4>{label}</h4>
     </label>
@@ -153,7 +153,7 @@ const Signup = () => {
       localStorage.setItem("token", token);
 
       setIsLoading(false);
-      setPopup(true);
+      setPopup(false);
       setMessage(response.data.message);
     } catch (error) {
       setIsLoading(false);
@@ -179,7 +179,7 @@ const Signup = () => {
   return (
     <div className="bg-[#608A7D] box-content w-full min-h-screen">
       <Navbar />
-      <div className="flex flex-col md:flex-row p-4 sm:p-20 mt-[20px] justify-center items-center">
+      <div className="flex flex-col md:flex-row p-4 sm:p-8 mt-6 justify-center items-center">
         <div className="hidden lg:flex w-full md:w-1/3 relative">
           <div className="relative w-full rounded-[380px] h-[611.12px] mt-10">
             <img
@@ -194,17 +194,18 @@ const Signup = () => {
             />
           </div>
         </div>
-        <div className="bg-white w-full md:w-1/3 p-8 sm:p-8 border-[1px] border-[#608A7D] rounded-[20px]">
+        <div className="bg-white w-full md:w-1/3 p-8 border-[1px] border-[#608A7D] rounded-[20px]">
           {popup ? (
             <Otp />
           ) : (
             <div>
-              <h1 className="text-center text-2xl font-bold mt-6 mb-4">
-                Become a Member <hr />
+              <h1 className="text-center text-2xl font-bold mb-4">
+                Become a Member
+                <hr />
               </h1>
               <section className="flex flex-col p-8 sm:flex-row gap-4 sm:gap-8 mb-4">
                 <div className="flex items-center gap-4 sm:gap-8 w-full sm:w-[270px] border h-[40px] border-[#608A7d] rounded-[10px] bg-white">
-                  <div className="bg-[#608A7d] h-full">
+                  <div className="bg-[#608A7d] h-full flex items-center">
                     <img
                       src={googleIcon}
                       className="h-full w-8 p-2"
@@ -216,7 +217,7 @@ const Signup = () => {
                   </h4>
                 </div>
                 <div className="flex items-center gap-4 sm:gap-8 sm:w-[270px] border h-[40px] rounded-[10px] border-[#608A7D] bg-white">
-                  <div className="bg-[#608A7d] h-full">
+                  <div className="bg-[#608A7d] h-full flex items-center">
                     <img
                       src={facebookIcon}
                       className="p-2 h-full"
@@ -228,8 +229,8 @@ const Signup = () => {
                   </h4>
                 </div>
               </section>
-              <h3 className="text-center capitalize">or</h3>
-              <section className="h-auto lg:ml-[90px]">
+              <h3 className="text-center capitalize mb-4">or</h3>
+              <section className="h-auto">
                 <InputField
                   label="Email"
                   type="email"
@@ -308,11 +309,11 @@ const Signup = () => {
                           : "opacity-100 hover:bg-[#4a6f64]"
                       }`}
                     >
-                      Sign Up
+                      {isLoading ? "Signing Up..." : "Sign Up"}
                     </button>
                   )}
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 text-center">
                   <span className="text-gray-500">
                     Already a member?{" "}
                     <a

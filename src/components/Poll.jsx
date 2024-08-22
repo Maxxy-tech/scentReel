@@ -127,14 +127,24 @@ const Poll = () => {
       <h2 className="text-2xl font-bold m-5 text-center">Performance Poll</h2>
       <div className="absolute lg:mt-[6%] -left-[1%] pr-10 mr-30">
         <div className="relative">
-          <img src={arrow4} className="" alt="" />{" "}
-          <div className="  pr-8">
-            <div className="rotate-90 absolute lg:mt-[20px] mb-[20px] -left-[181px]  h-[200px] w-[200px]">
-              <p className="h-full w-full  ">% Perfume Dupe</p>
+          <img
+            src={arrow4}
+            className="w-[6px] ml-4 sm:w-[60px] md:w-[80px] lg:w-auto"
+            alt="Arrow 4"
+          />
+          <div className="pr-4 sm:pr-6 md:pr-8 lg:pr-10">
+            <div className="rotate-90 absolute mt-[10px] sm:mt-[15px] lg:mt-[20px] mb-[14px] sm:mb-[15px] lg:mb-[20px] -left-[75px] sm:-left-[90px] md:-left-[120px] lg:-left-[170px] h-[100px] sm:h-[150px] md:h-[180px] lg:h-[200px] w-[100px] sm:w-[150px] md:w-[180px] lg:w-[200px]">
+              <p className="h-full w-full text-[10px]  sm:text-[12px] md:text-[14px] lg:text-base">
+                % Perfume Dupe
+              </p>
             </div>
           </div>
-          <div className="mt-[140px]">
-            <img src={arrow3} className="" alt="" />
+          <div className="mt-[90px] sm:mt-[100px] md:mt-[120px] lg:mt-[140px]">
+            <img
+              src={arrow3}
+              className="w-[6px] ml-4 sm:w-[60px] md:w-[10px] lg:w-auto"
+              alt="Arrow 3"
+            />
           </div>
         </div>
       </div>
@@ -142,13 +152,14 @@ const Poll = () => {
         <div className="w-full h-[200px] md:h-[300px] lg:h-[400px]">
           <Bar data={data} options={options} className=" w-full" />
         </div>
-        <div className="flex gap-[200px]">
+        <div className="flex gap-[20px] ml-20 relative mt-4">
           <div>
-            <img src={arrow1} alt="" />
+            <img src={arrow1} alt="" className="w-20 mt-2 mr-" />
           </div>
           <div>
-            <img src={arrow2} alt="" />
+            <img src={arrow2} alt="" className="w-20 ml-20 mt-2" />
           </div>
+          <h5 className="absolute text-center ml-[85px] ">Perfume Note</h5>
         </div>
         <div className="w-full flex flex-col justify-center items-center">
           <div className="flex flex-wrap justify-center gap-4 mt-4">
