@@ -124,12 +124,12 @@ const Poll = () => {
 
   return (
     <div className="relative p-4 w-full md:p-9 md:m-10">
-      <h2 className="text-2xl font-bold">Performance Poll</h2>
-      <div className="absolute mt-[6%] -left-[1%] pr-10 mr-30">
+      <h2 className="text-2xl font-bold m-5 text-center">Performance Poll</h2>
+      <div className="absolute lg:mt-[6%] -left-[1%] pr-10 mr-30">
         <div className="relative">
           <img src={arrow4} className="" alt="" />{" "}
           <div className="  pr-8">
-            <div className="rotate-90 absolute mt-[20px] mb-[20px] -left-[181px]  h-[200px] w-[200px]">
+            <div className="rotate-90 absolute lg:mt-[20px] mb-[20px] -left-[181px]  h-[200px] w-[200px]">
               <p className="h-full w-full  ">% Perfume Dupe</p>
             </div>
           </div>
@@ -138,9 +138,17 @@ const Poll = () => {
           </div>
         </div>
       </div>
-      <div className="lg:grid lg:grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="w-full h-[300px] md:h-[500px] lg:h-[700px]">
-          <Bar data={data} options={options} className="h-full w-full" />
+      <div className="lg:grid lg:grid-cols-1  gap-4">
+        <div className="w-full h-[200px] md:h-[300px] lg:h-[400px]">
+          <Bar data={data} options={options} className=" w-full" />
+        </div>
+        <div className="flex gap-[200px]">
+          <div>
+            <img src={arrow1} alt="" />
+          </div>
+          <div>
+            <img src={arrow2} alt="" />
+          </div>
         </div>
         <div className="w-full flex flex-col justify-center items-center">
           <div className="flex flex-wrap justify-center gap-4 mt-4">
@@ -160,15 +168,6 @@ const Poll = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      <div className="flex gap-[200px]">
-        <div>
-          <img src={arrow1} alt="" />
-        </div>
-        <div>
-          <img src={arrow2} alt="" />
         </div>
       </div>
     </div>

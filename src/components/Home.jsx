@@ -12,13 +12,14 @@ const Home = () => {
       <div className="mt-[0.3%]">
         <Feeds />
       </div><div className="mt-[80px] w-full "><h2 className="text-[30px] text-center capitalize ">fragrance of the week</h2></div>
-      <div className="lg:flex  lg:flex-row gap-6 w-[100vw]  ">
+      <div className="lg:flex  lg:flex-row gap-6]  ">
 
         <Scent />
+        
         <Poll />
       </div>
+      <div className="mt-[100%]"><Footer /></div>
 
-      <Footer />
     </div>
   );
 };

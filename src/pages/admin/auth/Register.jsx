@@ -1,24 +1,21 @@
 import { useState, useEffect, useRef } from "react";
 import { Spinner } from "@material-tailwind/react";
 import axios from "axios";
-import google from "../../assets/icons8-google-48.png";
-import facebook from "../../assets/tabler-icon-brand-facebook.png";
-import icon1 from "../../assets/icons8-approved-30.png";
-import icon2 from "../../assets/icons8-cancel-50.png";
-import icon3 from "../../assets/icons8-info-50.png";
-import eye from "../../assets/icons8-eye-50.png";
-import eye2 from "../../assets/icons8-hide-password-30.png";
-import divImg from "../../assets/Gentleman.png";
-import vector1 from "../../assets/Vector 1 (3).png";
+import googleIcon from "../../assets/icons8-google-48.png";
+import facebookIcon from "../../assets/tabler-icon-brand-facebook.png";
+import infoIcon from "../../assets/icons8-info-50.png";
+import eyeOpenIcon from "../../assets/icons8-eye-50.png";
+import eyeClosedIcon from "../../assets/icons8-hide-password-30.png";
+import gentlemanImage from "../../assets/Gentleman.png";
+import vectorImage from "../../assets/Vector 1 (3).png";
 import "./register.css";
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
 import Otp from "./Otp";
-import { useAuthContext } from "../../context/useAuthContext";
-import './register.css'
 
-const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const USERNAME_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
+const PASSWORD_REGEX =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const InputField = ({
   label,
@@ -44,7 +41,7 @@ const InputField = ({
     <label className="flex capitalize sm:p-3">
       <h4>{label}</h4>
     </label>
-    <div className="relative eye">
+    <div className="relative">
       <input
         type={reveal ? "text" : type}
         value={value}
@@ -55,13 +52,13 @@ const InputField = ({
         aria-describedby={ariaDescribedby}
         onFocus={onFocus}
         onBlur={onBlur}
-        className={className}
+        className={`w-full border p-2 border-black h-8 rounded ${className}`}
       />
       {icon && (
         <button
           type="button"
           onClick={toggleReveal}
-          className="absolute eye top-1/2 sm:right-[50px] right-3 transform -translate-y-1/2 focus:outline-none"
+          className="absolute top-1/2 right-3 transform -translate-y-1/2 focus:outline-none"
         >
           <img
             src={reveal ? icon : toggleIcon}
@@ -72,9 +69,9 @@ const InputField = ({
       )}
     </div>
     {note && (
-      <div className="relative sm:mt-[20px]">
+      <div className="relative mt-2">
         <p className={noteVisible ? "instructions" : "offscreen"}>
-          <img src={icon3} alt="info icon" width="20px" />
+          <img src={infoIcon} alt="info icon" width="20px" />
           {note}
         </p>
       </div>
@@ -108,7 +105,6 @@ const Signup = () => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [popup, setPopup] = useState(false);
-  const { dispatch } = useAuthContext();
 
   useEffect(() => {
     if (userRef.current) {
@@ -117,11 +113,11 @@ const Signup = () => {
   }, []);
 
   useEffect(() => {
-    setValidName(USER_REGEX.test(username));
+    setValidName(USERNAME_REGEX.test(username));
   }, [username]);
 
   useEffect(() => {
-    setValidPassword(PWD_REGEX.test(password));
+    setValidPassword(PASSWORD_REGEX.test(password));
     setValidMatch(password === matchPassword);
   }, [password, matchPassword]);
 
@@ -130,11 +126,12 @@ const Signup = () => {
   }, [username, password, matchPassword]);
 
   const handleSubmit = async (e) => {
-    setIsLoading(true);
     e.preventDefault();
+    setIsLoading(true);
 
     if (!validName || !validPassword || !validMatch) {
       setErrMsg("Invalid Entry");
+      setIsLoading(false);
       return;
     }
 
@@ -154,7 +151,6 @@ const Signup = () => {
 
       const token = response.data.data.accesstoken.token;
       localStorage.setItem("token", token);
-      dispatch({ type: "LOGIN", payload: response });
 
       setIsLoading(false);
       setPopup(true);
@@ -180,32 +176,25 @@ const Signup = () => {
     !validPassword ||
     !validMatch;
 
-
-
   return (
-    <div className="bg-[#608A7D] box-content w-full min-h-screen ]">
+    <div className="bg-[#608A7D] box-content w-full min-h-screen">
       <Navbar />
-      <div className="flex flex-col sm:flex-row p-4 sm:p-20  mt-[20px] justify-center items-center">
-        <div className="hidden md:hidden lg:flex sm:flex w-full sm:w-1/3 relative">
-          <div className="relative w-full sm:w-[428.37px]   rounded-[380px] h-[611.12px] mt-10 ">
-            <div className="w-[458.57px] ">
-              {" "}
-              <img
-                src={vector1}
-                className="absolute w-[458.57px] left-[-50px] border-[5px] border-transparent h-[608px]"
-                alt=""
-              />
-            </div>
-            <div className="h-[600.64px] top-[517px] w-[411.95px] bg-[#F5AFAF] rounded-[300px]  rotate-[-1.61]">
-              <img
-                src={divImg}
-                className="absolute h-[600.64px] left-[32px] top-[2px] w-[411.95px] bg-[#F5AFAF] rounded-[300px] rotate-[178.39]"
-                alt=""
-              />
-            </div>
+      <div className="flex flex-col md:flex-row p-4 sm:p-20 mt-[20px] justify-center items-center">
+        <div className="hidden lg:flex w-full md:w-1/3 relative">
+          <div className="relative w-full rounded-[380px] h-[611.12px] mt-10">
+            <img
+              src={vectorImage}
+              className="absolute w-[458.57px] left-[-50px] border-[5px] border-transparent h-[608px]"
+              alt=""
+            />
+            <img
+              src={gentlemanImage}
+              className="absolute h-[600.64px] left-[32px] top-[2px] w-[411.95px] bg-[#F5AFAF] rounded-[300px] rotate-[178.39]"
+              alt=""
+            />
           </div>
         </div>
-        <div className="bg-white w-full md:w-full md:p-1 sm:w-2/3 p-4 sm:p-8 border-[1px] border-[#608A7D] rounded-[20px]">
+        <div className="bg-white w-full md:w-1/3 p-8 sm:p-8 border-[1px] border-[#608A7D] rounded-[20px]">
           {popup ? (
             <Otp />
           ) : (
@@ -214,36 +203,39 @@ const Signup = () => {
                 Become a Member <hr />
               </h1>
               <section className="flex flex-col p-8 sm:flex-row gap-4 sm:gap-8 mb-4">
-                <div className="flex items-center gap-8 w-[270px] border h-[40px] border-[#608A7d] rounded-[10px] bg-white">
+                <div className="flex items-center gap-4 sm:gap-8 w-full sm:w-[270px] border h-[40px] border-[#608A7d] rounded-[10px] bg-white">
                   <div className="bg-[#608A7d] h-full">
                     <img
-                      src={google}
-                      className="h-full  w-8 p-2"
+                      src={googleIcon}
+                      className="h-full w-8 p-2"
                       alt="Google logo"
                     />
                   </div>
-                  <h4 className="font-bold">Register with Google</h4>
+                  <h4 className="font-bold text-sm sm:text-base">
+                    Register with Google
+                  </h4>
                 </div>
-                <div className="flex items-center  gap-9  w-[270px]  border h-[40px] rounded-[10px] border-[#608A7D]  bg-white">
+                <div className="flex items-center gap-4 sm:gap-8 sm:w-[270px] border h-[40px] rounded-[10px] border-[#608A7D] bg-white">
                   <div className="bg-[#608A7d] h-full">
                     <img
-                      src={facebook}
-                      className=" p-2 h-full"
+                      src={facebookIcon}
+                      className="p-2 h-full"
                       alt="Facebook logo"
                     />
                   </div>
-
-                  <h4 className="font-bold">Register with Facebook</h4>
+                  <h4 className="font-bold text-sm sm:text-base">
+                    Register with Facebook
+                  </h4>
                 </div>
               </section>
-              <h3 className="text-center capitalize ">or</h3>
-              <section className=" h-auto lg:ml-[90px] ">
+              <h3 className="text-center capitalize">or</h3>
+              <section className="h-auto lg:ml-[90px]">
                 <InputField
                   label="Email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full sm:w-[558px] md:w-[500px] border p-2  border-black h-8 rounded"
+                  className="w-full sm:w-[558px] md:w-[500px]"
                 />
                 <InputField
                   label="Password"
@@ -254,96 +246,91 @@ const Signup = () => {
                   ariaDescribedby="pwdnote"
                   onFocus={() => setPasswordFocus(true)}
                   onBlur={() => setPasswordFocus(false)}
-                  className="w-full sm:w-[558px] md:w-[500px]  border p-2 border-black h-8 rounded"
-                  icon={eye}
-                  toggleIcon={eye2}
-                  toggleIconAlt="Show password"
+                  icon={eyeOpenIcon}
+                  toggleIcon={eyeClosedIcon}
+                  toggleIconAlt="Toggle visibility"
                   reveal={revealPwd}
-                  toggleReveal={() => setRevealPwd(!revealPwd)}
-                  note=" Must include uppercase and lowercase letters, a
-                              number and a special character."
+                  toggleReveal={() => setRevealPwd((prevState) => !prevState)}
+                  note="Password must be 8-24 characters long, and include at least one uppercase letter, one lowercase letter, a number, and a special character."
                   noteVisible={passwordFocus && password && !validPassword}
-                />{" "}
-                <div>
-                  <InputField
-                    label="Confirm Password"
-                    type="password"
-                    value={matchPassword}
-                    onChange={(e) => setMatchPassword(e.target.value)}
-                    ariaInvalid={validMatch ? "false" : "true"}
-                    ariaDescribedby="confirmnote"
-                    onFocus={() => setMatchFocus(true)}
-                    onBlur={() => setMatchFocus(false)}
-                    className="w-full sm:w-[558px] md:w-[500px] p-2  border  border-black h-8 rounded"
-                    icon={eye}
-                    toggleIcon={eye2}
-                    toggleIconAlt="Show password"
-                    reveal={revealConfirmPwd}
-                    toggleReveal={() => setRevealConfirmPwd(!revealConfirmPwd)}
-                    note="Must match the first password input field."
-                    noteVisible={matchFocus && matchPassword && !validMatch}
-                  />
-                </div>
+                />
                 <InputField
-                  label="Full Name"
-                  value={fullName}
-                  onChange={(e) => setFullname(e.target.value)}
-                  className="w-full sm:w-[558px] md:w-[500px] border p-2  border-black h-8 rounded"
+                  label="Confirm Password"
+                  type="password"
+                  value={matchPassword}
+                  onChange={(e) => setMatchPassword(e.target.value)}
+                  ariaInvalid={validMatch ? "false" : "true"}
+                  ariaDescribedby="matchnote"
+                  onFocus={() => setMatchFocus(true)}
+                  onBlur={() => setMatchFocus(false)}
+                  icon={eyeOpenIcon}
+                  toggleIcon={eyeClosedIcon}
+                  toggleIconAlt="Toggle visibility"
+                  reveal={revealConfirmPwd}
+                  toggleReveal={() =>
+                    setRevealConfirmPwd((prevState) => !prevState)
+                  }
+                  note="Passwords must match."
+                  noteVisible={matchFocus && !validMatch}
                 />
                 <InputField
                   label="Username"
-                  ref={userRef}
+                  type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   ariaInvalid={validName ? "false" : "true"}
                   ariaDescribedby="uidnote"
                   onFocus={() => setUserFocus(true)}
                   onBlur={() => setUserFocus(false)}
-                  className="w-full sm:w-[558px] md:w-[500px] mb-4 border p-2 border-black h-8 rounded"
-                  note="4 to 24 characters. Must begin with a letter. Letters, numbers, underscores, hyphens allowed."
+                  note="Username must be 4-24 characters long, start with a letter, and can contain letters, numbers, hyphens, and underscores."
                   noteVisible={userFocus && username && !validName}
                 />
-                <div className=" justify-center w-full mb-4">
-                  <button
-                    onClick={handleSubmit}
-                    disabled={isButtonDisabled}
-                    className={`rounded capitalize submit border p-2 bg-[#608A7D] text-white text-center md:ml-[35%] submit w-full md:w-[100px] sm:w-[100px] h-10 ${
-                      isButtonDisabled
-                        ? "opacity-50 not-submit cursor-not-allowed"
-                        : ""
-                    }`}
-                  >
-                    {isLoading ? (
-                      <Spinner
-                        color="green"
-                        className="h-6 w-6 ml-[45%]  text-white"
-                      />
-                    ) : (
-                      <h4>Sign up</h4>
-                    )}
-                  </button>
-                  <p
-                    ref={errRef}
-                    className={errMsg ? "hidden" : "flex text-red-500 "}
-                    aria-live="assertive"
-                  >
-                   <p className="text-center  w-full mt-6">{errMsg} {message}</p>
-                  </p>
+                <InputField
+                  label="Fullname"
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullname(e.target.value)}
+                />
+                <p ref={errRef} className="text-red-500 mt-2">
+                  {errMsg}
+                </p>
+                <div className="flex justify-center items-center mt-8">
+                  {isLoading ? (
+                    <Spinner className="h-12 w-12 text-black/10" />
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={isButtonDisabled}
+                      onClick={handleSubmit}
+                      className={`w-full sm:w-2/3 md:w-1/2 py-2 bg-[#608A7d] text-white font-bold rounded-lg ${
+                        isButtonDisabled
+                          ? "opacity-50 cursor-not-allowed"
+                          : "opacity-100 hover:bg-[#4a6f64]"
+                      }`}
+                    >
+                      Sign Up
+                    </button>
+                  )}
                 </div>
-                <div className="text-center md:mt-4 md:mb-0 mb-[90px]">
-                  <h3>
-                    Already have an account?{" "}
-                    <a href="/login" className="text-[#608A7D] font-bold">
-                      Login here
+                <div className="mt-2">
+                  <span className="text-gray-500">
+                    Already a member?{" "}
+                    <a
+                      href="#"
+                      className="text-blue-500 hover:text-blue-700 underline"
+                    >
+                      Login
                     </a>
-                  </h3>
+                  </span>
                 </div>
               </section>
+              <div className="mt-8 mb-4">
+                <Footer />
+              </div>
             </div>
-          )}{" "}
+          )}
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

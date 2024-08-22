@@ -44,7 +44,7 @@ const InputField = ({
     <label className="flex capitalize sm:p-3">
       <h4>{label}</h4>
     </label>
-    <div className="relative eye">
+    <div className="relative">
       <input
         type={reveal ? "text" : type}
         value={value}
@@ -55,14 +55,10 @@ const InputField = ({
         aria-describedby={ariaDescribedby}
         onFocus={onFocus}
         onBlur={onBlur}
-        className={className}
+        className={`w-full border p-2 border-black h-8 rounded ${className}`}
       />
       {icon && (
-        <button
-          type="button"
-          onClick={toggleReveal}
-          className="absolute eye top-1/2 sm:right-[50px] right-3 transform -translate-y-1/2 focus:outline-none"
-        >
+        <button type="button" onClick={toggleReveal} className="eye">
           <img
             src={reveal ? icon : toggleIcon}
             width="20px"
@@ -72,8 +68,8 @@ const InputField = ({
       )}
     </div>
     {note && (
-      <div className="relative sm:mt-[20px]">
-        <p className={noteVisible ? "instructions" : "offscreen"}>
+      <div className="relative mt-2">
+        <p className={noteVisible ? "visible" : "offscreen"}>
           <img src={icon3} alt="info icon" width="20px" />
           {note}
         </p>
@@ -154,7 +150,7 @@ const Signup = () => {
 
       const token = response.data.data.accesstoken.token;
       localStorage.setItem("token", token);
-      dispatch({ type: "LOGIN", payload: response });
+
 
       setIsLoading(false);
       setPopup(true);

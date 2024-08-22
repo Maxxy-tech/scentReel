@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import "./index.css";
 import Layout from "./components/layout/Layout";
 import Login from "./components/auth/Login";
@@ -19,7 +23,7 @@ import RequireAuth from "./components/RequiredAuth";
 import UserDashboard from "./pages/user/UserDashboard";
 import ForgotPwd from "./components/auth/ForgotPwd";
 import PersistLogin from "./components/auth/PersistLogin";
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -84,10 +88,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
-      <UserProvider>
-        <RouterProvider router={router} />
-      </UserProvider>
-    </AuthProvider>
+    <GoogleOAuthProvider >
+      <AuthProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );

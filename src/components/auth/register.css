@@ -1,65 +1,99 @@
-input{
-    Width:558px;
-    height:40px;
-    top:745px ;
-     left:608px;
-    border-radius:10px ;
-    border-style:outset;
+/* Input fields */
+input {
+    width: 100%; /* Ensure full width in its container */
+    height: 40px;
+    border-radius: 10px;
+    border-style: outset;
     border-color: #608A7D;
-
-}
-h1{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 8px;
 }
 
-label{
-    font:300;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Headings */
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Labels */
+label {
+    font-weight: 300;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: medium;
     text-transform: capitalize;
-    margin-left: ;
-    padding:4px;
+    padding: 4px;
 }
 
+/* Submit button */
 .submit {
-    width:fixed(60px);
-    height:fixed(40px);
-    top:1104px;
-    left:844px;
-    border-radius:10px;
-    padding:10px;
-    gap:10px;
+    width: 100%; /* Adjust button width to fit its container */
+    height: 40px;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
     background-color: #608A7D;
     color: white;
-
 }
 
-.border{
+/* Border styles */
+.border {
     border-color: #C7C7C7;
-;
+}
+
+/* Visibility toggle button */
+.eye {
+    position: absolute;
+    top: 50%;
+    right: 16%; /* Adjusted to be near the right side */
+    transform: translateY(-50%);
+    padding: 2px;
 }
 
 /* For the visibility toggle button */
-.eye .eye{
-  position: absolute;
-  top: 50%;
-
-  bottom: px;
-  transform: translateY(-50%);
-  padding:2px;
-}
-
-/* To ensure the eye icons are visible */
 input[type='password'] + button img {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
-/* To manage visibility of notes */
+/* Manage visibility of notes */
 .visible {
-  display: block;
+    display: block;
 }
 
 .offscreen {
-  position: absolute;
-  left: -9999px;
+    position: absolute;
+    left: -9999px;
+}
+
+/* Media Queries */
+
+/* For tablets and smaller devices */
+@media (max-width: 768px) {
+    .submit {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .eye {
+        right: 8%; /* Adjust the position of the eye icon */
+    }
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+    input {
+        width: 100%;
+        padding: 6px;
+    }
+
+    label {
+        font-size: small;
+        padding: 2px;
+    }
+
+    .submit {
+        height: 36px;
+        padding: 6px;
+    }
+
+    .eye {
+        right: 6%; /* Further adjust the position of the eye icon */
+    }
 }
