@@ -22,7 +22,7 @@ const Forum = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, [axiosInstance]);
+  }, []);
 
   useEffect(() => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
