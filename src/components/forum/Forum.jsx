@@ -22,8 +22,19 @@ const Forum = () => {
   const [singleComment, setSingleComment] = useState(null);
 
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axiosInstance.get("forum/posts");
+        const fetchedPosts = response.data.data || [];
+        setPosts(fetchedPosts);
+        initializePostStates(fetchedPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
     fetchPosts();
-  }, []); // Ensure fetchPosts runs only once on mount
+  }, [axiosInstance]); // Added axiosInstance to dependencies to ensure it’s up-to-date
 
   useEffect(() => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
@@ -31,17 +42,6 @@ const Forum = () => {
       setDarkMode(savedDarkMode);
     }
   }, []); // Load dark mode preference on mount
-
-  const fetchPosts = async () => {
-    try {
-      const response = await axiosInstance.get("forum/posts");
-      const fetchedPosts = response.data.data || [];
-      setPosts(fetchedPosts);
-      initializePostStates(fetchedPosts);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-  };
 
   const initializePostStates = (fetchedPosts) => {
     const initialStates = fetchedPosts.map((post) => ({
@@ -116,7 +116,6 @@ const Forum = () => {
         `/forum/posts/${postId}/comments`,
         newComment
       );
-
       const savedComment = response.data.data;
       setComments((prevComments) => {
         const postComments = prevComments[postId] || [];
@@ -189,13 +188,11 @@ const Forum = () => {
         />
       </div>
 
-      <div
-        className={`w-full h-auto  ${darkMode ? "bg-gray-800" : "bg-white"}`}
-      >
+      <div className={`w-full h-auto ${darkMode ? "bg-gray-800" : "bg-white"}`}>
         {posts.map((post, index) => (
           <div
             key={post._id}
-            className={`p-2 mx-4 sm:mx-8 md:mx-16 lg:mx-32 my-4 shadow-sm  ${
+            className={`p-2 mx-4 sm:mx-8 md:mx-16 lg:mx-32 my-4 shadow-sm ${
               darkMode ? "bg-gray-700 border border-gray-600" : "bg-white"
             }`}
           >
@@ -276,28 +273,12 @@ const Forum = () => {
                   </div>
                 </div>
                 {showCommentInput[post._id] && (
-                  <div className="mt-4">
-                    <input
-                      type="text"
-                      placeholder="Add a comment..."
-                      className="w-full px-3 py-2 border rounded-md"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && e.target.value.trim()) {
-                          handleAddComment(post._id, e.target.value);
-                          e.target.value = "";
-                        }
-                      }}
-                    />
-                    <CommentList
-                      comments={comments[post._id]}
-                      onAddComment={(commentText) =>
-                        handleAddComment(post._id, commentText)
-                      }
-                      onFetchCommentById={(commentId) =>
-                        fetchCommentById(commentId)
-                      }
-                    />
-                  </div>
+                  <CommentList
+                    comments={comments[post._id]}
+                    postId={post._id}
+                    handleAddComment={handleAddComment}
+                    fetchCommentById={fetchCommentById}
+                  />
                 )}
               </div>
             </div>
