@@ -1,31 +1,29 @@
 import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-// import axiosInstance from "../../api/axiosInstance"; // Import the axios instance with interceptors
-
 import "./register.css";
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
 import "../../index.css";
 import divImg from "../../assets/Gentleman.png";
 import vector1 from "../../assets/Vector 1 (3).png";
-import useAxiosInstance from '../../hooks/useAxiosInstance'
-import AuthContext from "../../context/Authprovider"; //
+import useAxiosInstance from "../../hooks/useAxiosInstance";
+import AuthContext from "../../context/Authprovider";
 import { UserContext } from "../../context/userContext";
-// import { useAuthContext } from "../../context/useAuthContext";
+import eye from "../../assets/icons8-eye-50.png";
+import eye2 from "../../assets/icons8-hide-password-30.png";
 
 const Login = () => {
-  const axiosInstance=useAxiosInstance()
+  const axiosInstance = useAxiosInstance();
   const location = useLocation();
   const navigate = useNavigate();
   const from = location.state?.from?.pathname || "/";
-  const {auth, setAuth } = useContext(AuthContext); // Use useContext to access AuthContext
+  const { auth, setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [Login, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-  // const { dispatch } = useAuthContext();
+  const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -33,50 +31,35 @@ const Login = () => {
   }, [email, password]);
 
   useEffect(() => {
-    if (Login ) {
-      console.log("Navigating to home page");
-      navigate("/", { state: { from: location }, replace: true });
+    if (auth?.accessToken) {
+      navigate(from, { replace: true });
     }
-  }, [Login, location, navigate]);
+  }, [auth, from, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     const url = "auth/login";
-    const payload = {
-      email,
-      password,
-    };
+    const payload = { email, password };
 
     try {
       const response = await axiosInstance.post(url, payload, {
-        headers: {
-          "Content-Type": "application/json",
-
-        },
-        // withCredentials: true
+        headers: { "Content-Type": "application/json" },
       });
-
-      console.log("Login response:", response, response.status);
 
       const user = response?.data.data.user;
       const roles = response?.data.data.user.role;
       const accessToken = response?.data.data.accessToken;
 
-      navigate(from, {replace:true})
-      setIsLoading(false);
-      // dispatch({ type: "LOGIN", payload: user });
       setAuth({ email, roles, accessToken });
-
+      setUser(user);
       setMessage(response.data.message);
-      setUser(user); // Set the user context
-      console.log(response.status, user);
-      // Navigate to home page after successful login
-      setIsLogin(true);
+      setIsLoading(false);
+
+      navigate(from, { replace: true });
     } catch (error) {
       setIsLoading(false);
-      console.log("Login error:", error);
       setMessage(
         error.response ? error.response.data.message : "An error occurred"
       );
@@ -88,24 +71,17 @@ const Login = () => {
       <Navbar />
       <div className="flex-grow flex flex-col mb-[100px] md:mt-[70px] justify-center items-center px-4 sm:px-8 md:px-16 lg:px-24">
         <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl mt-10 md:mt-0">
-          <div className="hidden md:hidden lg:flex sm:flex w-full sm:w-1/3 relative">
-            <div className="relative w-full sm:w-[328.37px]   rounded-[380px] h-[511.12px] mt-10 ">
-              <div className="w-[558.57px] ">
-                {" "}
-                <img
-                  src={vector1}
-                  className="absolute w-[458.57px] left-[15px] border-[5px] border-transparent h-[508px]"
-                  alt=""
-                />
-              </div>
-              <div className="h-[600.64px] top-[517px] w-[411.95px]  rounded-[300px]  rotate-[-1.61]">
-                <img
-                  src={divImg}
-                  className="absolute h-[500.64px] left-8  top-[2px] w-[311.95px]  rounded-[300px] rotate-[178.39]"
-                  alt=""
-                />
-              </div>
-            </div>
+          <div className="hidden md:flex md:w-1/2 lg:w-1/3">
+            <img
+              src={vector1}
+              className="w-[400px] left-1 h-[500px]"
+              alt="Vector"
+            />
+            <img
+              src={divImg}
+              className="absolute w-[300px] left-[220px] mb-[190px] h-[500px]"
+              alt="Gentleman"
+            />
           </div>
           <div className="bg-white w-full md:w-1/2 lg:w-2/3 p-6 md:p-8 lg:p-10 border border-[#608A7D] rounded-2xl">
             <h1 className="text-center text-2xl font-bold uppercase mb-6">
@@ -125,7 +101,7 @@ const Login = () => {
                   className="w-full p-3 border border-[#608A7D] rounded"
                 />
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col relative">
                 <label
                   htmlFor="password"
                   className="text-left font-medium mb-2"
@@ -133,12 +109,19 @@ const Login = () => {
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full p-3 border border-[#608A7D] rounded"
+                  className="w-full p-3 border border-[#608A7D] rounded pr-12"
+                />
+                <img
+                  src={showPassword ? eye : eye2}
+                  alt="Toggle password visibility"
+                  className="absolute top-1/2 right-3 w-4 transform -translate-y-1/2 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Toggle password visibility"
                 />
                 <p className="w-full text-end text-[#2819ad] capitalize mt-4 mr-8 cursor-pointer hover:text-[#2e0f0f42]">
                   <Link to="/forgot-pwd">Forgot password?</Link>
@@ -148,8 +131,30 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-[#608A7D] text-white py-3 px-6 rounded capitalize"
+                  className="bg-[#608A7D] text-white py-3 px-6 rounded capitalize flex items-center justify-center"
                 >
+                  {isLoading && (
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      ></path>
+                    </svg>
+                  )}
                   {isLoading ? "Signing in..." : "Sign in"}
                 </button>
               </div>
@@ -160,6 +165,7 @@ const Login = () => {
                       ? "text-green-700"
                       : "text-red-700"
                   }`}
+                  aria-live="polite"
                 >
                   {message}
                 </p>

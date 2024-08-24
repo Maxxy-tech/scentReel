@@ -22,9 +22,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [Login, setIsLogin] = useState(false);
   const [message, setMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // New state for password visibility
+  const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useContext(UserContext);
 
   useEffect(() => {
@@ -32,39 +31,33 @@ const Login = () => {
   }, [email, password]);
 
   useEffect(() => {
-    if (Login) {
-      navigate("/", { state: { from: location }, replace: true });
+    if (auth?.accessToken) {
+      navigate(from, { replace: true });
     }
-  }, [Login, location, navigate]);
+  }, [auth, from, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     const url = "auth/login";
-    const payload = {
-      email,
-      password,
-    };
+    const payload = { email, password };
 
     try {
       const response = await axiosInstance.post(url, payload, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
 
       const user = response?.data.data.user;
       const roles = response?.data.data.user.role;
       const accessToken = response?.data.data.accessToken;
 
-      navigate(from, { replace: true });
-      setIsLoading(false);
       setAuth({ email, roles, accessToken });
-
-      setMessage(response.data.message);
       setUser(user);
-      setIsLogin(true);
+      setMessage(response.data.message);
+      setIsLoading(false);
+
+      navigate(from, { replace: true });
     } catch (error) {
       setIsLoading(false);
       setMessage(
@@ -121,13 +114,14 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full p-3 border border-[#608A7D] rounded pr-12" // Add padding-right for the eye icon
+                  className="w-full p-3 border border-[#608A7D] rounded pr-12"
                 />
                 <img
-                  src={showPassword ? eye : eye2}
+                  src={eye}
                   alt="Toggle password visibility"
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+                  className="absolute w-6 h-6 top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label="Toggle password visibility"
                 />
                 <p className="w-full text-end text-[#2819ad] capitalize mt-4 mr-8 cursor-pointer hover:text-[#2e0f0f42]">
                   <Link to="/forgot-pwd">Forgot password?</Link>
@@ -137,8 +131,30 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="bg-[#608A7D] text-white py-3 px-6 rounded capitalize"
+                  className="bg-[#608A7D] text-white py-3 px-6 rounded capitalize flex items-center justify-center"
                 >
+                  {isLoading && (
+                    <svg
+                      className="animate-spin h-5 w-5 mr-3 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      ></path>
+                    </svg>
+                  )}
                   {isLoading ? "Signing in..." : "Sign in"}
                 </button>
               </div>
@@ -149,6 +165,7 @@ const Login = () => {
                       ? "text-green-700"
                       : "text-red-700"
                   }`}
+                  aria-live="polite"
                 >
                   {message}
                 </p>

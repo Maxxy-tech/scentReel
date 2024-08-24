@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import useAxiosInstance from "../../hooks/useAxiosInstance";
 import { Spinner } from "@material-tailwind/react";
 
 const Otp = () => {
@@ -11,7 +11,7 @@ const Otp = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const OTP_REGEX = /^[0-9]{1}$/;
   const refs = useRef([]);
-
+  const axiosInstance = useAxiosInstance();
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (time > 0) {
@@ -75,7 +75,7 @@ const Otp = () => {
     setIsLoading(true);
     setErrorMessage(""); // Clear previous error message
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         "https://scentreel-be.onrender.com/api/v1/auth/verify",
         payload,
         {
@@ -104,8 +104,8 @@ const Otp = () => {
     setIsLoading(true);
     setErrorMessage(""); // Clear previous error message
     try {
-      const response = await axios.post(
-        "https://scentreel-be.onrender.com/api/v1/admins/resend-otp",
+      const response = await axiosInstance.post(
+        "auth/resend-otp",
         {},
         {
           headers: {
