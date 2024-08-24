@@ -9,7 +9,8 @@ import moon from "../../assets/icons8-moon-30.png";
 import retweet from "../../assets/Default.png";
 import comment from "../../assets/icons8-comment-50.png";
 import { UserContext } from "../../context/userContext";
-import Navbar from '../home/Navbar'
+import Navbar from "../home/Navbar";
+
 const Forum = () => {
   const axiosInstance = useAxiosInstance();
   const { user } = useContext(UserContext);
@@ -22,14 +23,14 @@ const Forum = () => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, []); // Ensure fetchPosts runs only once on mount
 
   useEffect(() => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
     if (savedDarkMode !== null) {
       setDarkMode(savedDarkMode);
     }
-  }, []);
+  }, []); // Load dark mode preference on mount
 
   const fetchPosts = async () => {
     try {
@@ -116,7 +117,6 @@ const Forum = () => {
         newComment
       );
 
-      // If the comment was successfully added to the backend, update the state
       const savedComment = response.data.data;
       setComments((prevComments) => {
         const postComments = prevComments[postId] || [];
@@ -156,6 +156,14 @@ const Forum = () => {
     }
   };
 
+  const handleShowMore = (index) => {
+    setPostStates((prevStates) =>
+      prevStates.map((state, idx) =>
+        idx === index ? { ...state, showMore: !state.showMore } : state
+      )
+    );
+  };
+
   return (
     <div
       className={`min-h-screen ${
@@ -172,8 +180,9 @@ const Forum = () => {
         <img
           src={moon}
           onClick={() => {
-            setDarkMode(!darkMode);
-            localStorage.setItem("darkMode", !darkMode);
+            const newDarkMode = !darkMode;
+            setDarkMode(newDarkMode);
+            localStorage.setItem("darkMode", JSON.stringify(newDarkMode));
           }}
           className="bg-transparent mt-4 px-4 py-2 rounded fixed text-white cursor-pointer"
           alt="Toggle Dark Mode"
@@ -217,19 +226,11 @@ const Forum = () => {
                   }`}
                 >
                   {postStates[index].showMore
-                    ? post.content + post.moreContent
+                    ? post.content + postStates[index].moreContent
                     : post.content.slice(0, 100)}
                   {post.content.length > 100 && (
                     <button
-                      onClick={() =>
-                        setPostStates((prevStates) =>
-                          prevStates.map((state, idx) =>
-                            idx === index
-                              ? { ...state, showMore: !state.showMore }
-                              : state
-                          )
-                        )
-                      }
+                      onClick={() => handleShowMore(index)}
                       className="text-blue-500 text-sm ml-1"
                     >
                       {postStates[index].showMore ? "Read Less" : "Read More"}
@@ -265,8 +266,8 @@ const Forum = () => {
                     onClick={() => handleCommentButtonClick(post._id)}
                   >
                     <img
-                      className="w-6 hover:translate-y-[-2px]"
                       src={comment}
+                      className="hover:translate-y-[-2px]"
                       alt="comment"
                     />
                     <span className="text-sm">
@@ -274,16 +275,29 @@ const Forum = () => {
                     </span>
                   </div>
                 </div>
-
                 {showCommentInput[post._id] && (
-                  <CommentList
-                    postId={post._id}
-                    comments={comments[post._id]}
-                    handleAddComment={handleAddComment}
-                    darkMode={darkMode}
-                    fetchCommentById={fetchCommentById}
-                    singleComment={singleComment}
-                  />
+                  <div className="mt-4">
+                    <input
+                      type="text"
+                      placeholder="Add a comment..."
+                      className="w-full px-3 py-2 border rounded-md"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && e.target.value.trim()) {
+                          handleAddComment(post._id, e.target.value);
+                          e.target.value = "";
+                        }
+                      }}
+                    />
+                    <CommentList
+                      comments={comments[post._id]}
+                      onAddComment={(commentText) =>
+                        handleAddComment(post._id, commentText)
+                      }
+                      onFetchCommentById={(commentId) =>
+                        fetchCommentById(commentId)
+                      }
+                    />
+                  </div>
                 )}
               </div>
             </div>
