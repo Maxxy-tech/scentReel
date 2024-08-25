@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import useAxiosInstance from "../../hooks/useAxiosInstance";
 import CommentList from "./CommentList";
 import Post from "./Post";
@@ -21,27 +21,27 @@ const Forum = () => {
   const [showCommentInput, setShowCommentInput] = useState({});
   const [singleComment, setSingleComment] = useState(null);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axiosInstance.get("forum/posts");
-        const fetchedPosts = response.data.data || [];
-        setPosts(fetchedPosts);
-        initializePostStates(fetchedPosts);
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-      }
-    };
+  const fetchPosts = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get("forum/posts");
+      const fetchedPosts = response.data.data || [];
+      setPosts(fetchedPosts);
+      initializePostStates(fetchedPosts);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  }, [axiosInstance]);
 
+  useEffect(() => {
     fetchPosts();
-  }, [axiosInstance]); // Added axiosInstance to dependencies to ensure it’s up-to-date
+  }, [fetchPosts]);
 
   useEffect(() => {
     const savedDarkMode = JSON.parse(localStorage.getItem("darkMode"));
     if (savedDarkMode !== null) {
       setDarkMode(savedDarkMode);
     }
-  }, []); // Load dark mode preference on mount
+  }, []);
 
   const initializePostStates = (fetchedPosts) => {
     const initialStates = fetchedPosts.map((post) => ({
@@ -68,26 +68,32 @@ const Forum = () => {
     );
   };
 
-  const fetchComments = async (postId) => {
-    try {
-      const response = await axiosInstance.get(
-        `forum/posts/${postId}/comments`
-      );
-      return response.data.data || [];
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-      return [];
-    }
-  };
+  const fetchComments = useCallback(
+    async (postId) => {
+      try {
+        const response = await axiosInstance.get(
+          `forum/posts/${postId}/comments`
+        );
+        return response.data.data || [];
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        return [];
+      }
+    },
+    [axiosInstance]
+  );
 
-  const fetchCommentById = async (commentId) => {
-    try {
-      const response = await axiosInstance.get(`forum/comments/${commentId}`);
-      setSingleComment(response.data.data);
-    } catch (error) {
-      console.error("Error fetching single comment:", error);
-    }
-  };
+  const fetchCommentById = useCallback(
+    async (commentId) => {
+      try {
+        const response = await axiosInstance.get(`forum/comments/${commentId}`);
+        setSingleComment(response.data.data);
+      } catch (error) {
+        console.error("Error fetching single comment:", error);
+      }
+    },
+    [axiosInstance]
+  );
 
   const handleCommentButtonClick = async (postId) => {
     if (!showCommentInput[postId]) {
@@ -246,39 +252,47 @@ const Forum = () => {
                           ? heart2
                           : heart1
                       }
-                      alt="like"
+                      alt="Like"
                     />
-                    <span className="text-sm">{postStates[index].likes}</span>
-                  </div>
-                  <div className="flex items-center space-x-1 cursor-pointer">
-                    <img
-                      src={retweet}
-                      className="hover:translate-y-[-2px]"
-                      alt="retweet"
-                    />
-                    <span className="text-sm">0</span>
+                    <span className="text-[14px]">
+                      {postStates[index].likes}
+                    </span>
                   </div>
                   <div
                     className="flex items-center space-x-1 cursor-pointer"
                     onClick={() => handleCommentButtonClick(post._id)}
                   >
                     <img
-                      src={comment}
                       className="hover:translate-y-[-2px]"
-                      alt="comment"
+                      src={comment}
+                      alt="Comment"
                     />
-                    <span className="text-sm">
+                    <span className="text-[14px]">
                       {postStates[index].comments}
                     </span>
                   </div>
-                </div>
-                {showCommentInput[post._id] && (
-                  <CommentList
-                    comments={comments[post._id]}
-                    postId={post._id}
-                    handleAddComment={handleAddComment}
-                    fetchCommentById={fetchCommentById}
+                  <img
+                    className="hover:translate-y-[-2px]"
+                    src={retweet}
+                    alt="Share"
                   />
+                </div>
+
+                {showCommentInput[post._id] && (
+                  <div className="mt-4">
+                    <textarea
+                      rows="3"
+                      className="w-full border rounded-lg p-2"
+                      placeholder="Write a comment..."
+                    />
+                    <button
+                      onClick={() => handleAddComment(post._id, "New Comment")}
+                      className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                      Add Comment
+                    </button>
+                    <CommentList comments={comments[post._id]} />
+                  </div>
                 )}
               </div>
             </div>

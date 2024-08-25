@@ -1,19 +1,16 @@
-import { useEffect,useContext } from "react";
 import { axiosInstance } from "../api/axiosInstance";
+import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
-import AuthContext from "../context/Authprovider";
+import useAuth from "./useAuth";
 
-// Custom hook for using axios instance with token handling
 const useAxiosInstance = () => {
   const refresh = useRefreshToken();
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth } = useAuth();
 
-  // Set up interceptors for request and response
   useEffect(() => {
     const requestIntercept = axiosInstance.interceptors.request.use(
       (config) => {
-        // Add Authorization header if not present
-        if (!config.headers[`Authorization`]) {
+        if (!config.headers["Authorization"]) {
           config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
         }
         return config;
@@ -41,7 +38,6 @@ const useAxiosInstance = () => {
     };
   }, [auth, refresh]);
 
-  // Return the axios instance for use in components
   return axiosInstance;
 };
 

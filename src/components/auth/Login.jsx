@@ -79,7 +79,7 @@ const Login = () => {
             />
             <img
               src={divImg}
-              className="absolute w-[300px] left-[220px] mb-[190px] h-[500px]"
+              className="absolute w-[300px] left-[7rem] mb-[190px] h-[500px]"
               alt="Gentleman"
             />
           </div>
@@ -167,6 +167,7 @@ const Login = () => {
                   }`}
                   aria-live="polite"
                 >
+                  {errMsg}
                   {message}
                 </p>
               )}

@@ -1,39 +1,41 @@
 import { Outlet } from "react-router-dom";
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect } from "react";
 import useRefreshToken from "../../hooks/useRefreshToken";
-import AuthContext from "../../context/Authprovider"; // Ensure correct path
+import useAuth from "../../hooks/useAuth";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
-  const { auth, setAuth } = useContext(AuthContext);
-
-  const verifyRefreshToken = useCallback(async () => {
-    try {
-      const newAccessToken = await refresh();
-      console.log("Logged in. New access token:", newAccessToken);
-    } catch (error) {
-      console.error("Error during token refresh:", error);
-      setAuth(null); // Clear auth on error
-    } finally {
-      setIsLoading(false); // Ensure loading state is updated in both success and error cases
-    }
-  }, [refresh, setAuth]);
+  const { auth, persist } = useAuth();
 
   useEffect(() => {
-    if (!auth?.accessToken) {
-      verifyRefreshToken();
-    } else {
-      setIsLoading(false); // No need to refresh if accessToken is present
-    }
-  }, [auth?.accessToken, verifyRefreshToken]);
+    let isMounted = true;
+
+    const verifyRefreshToken = async () => {
+      try {
+        await refresh();
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isMounted && setIsLoading(false);
+      }
+    };
+
+
+    // Avoids unwanted call to verifyRefreshToken
+    !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
+
+    return () => (isMounted = false);
+  }, []);
 
   useEffect(() => {
     console.log(`isLoading: ${isLoading}`);
-    console.log(`auth: ${JSON.stringify(auth?.accessToken)}`);
-  }, [isLoading, auth?.accessToken]);
+    console.log(`aT: ${JSON.stringify(auth?.accessToken)}`);
+  }, [isLoading]);
 
-  return isLoading ? <div>Loading...</div> : <Outlet />;
+  return (
+    <>{!persist ? <Outlet /> : isLoading ? <p>Loading...</p> : <Outlet />}</>
+  );
 };
 
 export default PersistLogin;

@@ -91,7 +91,7 @@ const Signup = () => {
   const [fullName, setFullname] = useState("");
   const [matchPassword, setMatchPassword] = useState("");
 
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
   const [passwordFocus, setPasswordFocus] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
@@ -104,7 +104,7 @@ const Signup = () => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [popup, setPopup] = useState(false);
-  const { dispatch } = useAuthContext();
+
 
   useEffect(() => {
     if (userRef.current) {
@@ -233,13 +233,13 @@ const Signup = () => {
                 </div>
               </section>
               <h3 className="text-center capitalize ">or</h3>
-              <section className=" h-auto lg:ml-[90px] ">
+              <section className=" h-auto lg:ml-[90px] p-8">
                 <InputField
                   label="Email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full sm:w-[558px] md:w-[500px] border p-2  border-black h-8 rounded"
+                  className="w-full sm:w-[558px] md:w-[500px]  border p-2  border-black h-8 rounded"
                 />
                 <InputField
                   label="Password"

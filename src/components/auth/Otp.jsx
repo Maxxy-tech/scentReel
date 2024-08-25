@@ -26,7 +26,7 @@ const Otp = () => {
 
   useEffect(() => {
     setIsValidInput(otp.every((num) => OTP_REGEX.test(num)));
-  }, [otp]);
+  }, [otp,OTP_REGEX]);
 
   useEffect(() => {
     if (errorMessage) {

@@ -42,7 +42,7 @@ label {
 .eye {
     position: absolute;
     top: 50%;
-    right: 30%; /* Adjusted to be near the right side */
+    right: 1rem; /* Adjusted to be near the right side */
     transform: translateY(-50%);
     padding: 2px;
 }
@@ -95,5 +95,25 @@ input[type='password'] + button img {
 
     .eye {
         right: 6%; /* Further adjust the position of the eye icon */
+    }
+}
+@media (max-width: 1024px) {
+    input {
+        width: 100%;
+        padding: 6px;
+    }
+
+    label {
+        font-size: small;
+        padding: 2px;
+    }
+
+    .submit {
+        height: 36px;
+        padding: 6px;
+    }
+
+    .eye {
+        right: 7em; /* Further adjust the position of the eye icon */
     }
 }
