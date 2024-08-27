@@ -1,0 +1,36 @@
+/* Default styles */
+input {
+  width: 100%;
+  max-width: 524px; /* ensures input doesn't exceed the container on large screens */
+  height: 40px;
+  border-radius: 10px 0px 0px 0px;
+  border: 1px solid #C7C7C7;
+  opacity: 1;
+  padding: 0px;
+}
+
+label {
+  width: auto;
+  height: 21px;
+  opacity: 1;
+  display: inline-block;
+  margin-bottom: 8px; /* adds space below the label */
+}
+
+/* Responsiveness for smaller screens */
+@media screen and (max-width: 768px) {
+  input {
+    width: 100%; /* full width of the container */
+    max-width: 100%; /* remove max-width restriction */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  input {
+    height: 35px; /* slightly reduce height on very small screens */
+  }
+
+  label {
+    font-size: 14px; /* adjust font size for smaller screens */
+  }
+}
