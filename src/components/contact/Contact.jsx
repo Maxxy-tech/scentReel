@@ -60,7 +60,7 @@ const Brand = () => {
             <hr className="mt-2" />
           </h1>
 
-          <div className="mt-6">
+          <div className="mt-6 ml-[50%]">
             <Socials />
           </div>
 

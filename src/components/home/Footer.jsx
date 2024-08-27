@@ -38,8 +38,8 @@ const Footer = () => {
   return (
     <div className="w-full mt-20 bg-[#C19E70]">
       <div className="relative w-full">
-        <div className="w-11/12 mx-auto flex flex-col sm:flex-row ml-5  sm:ml-10 md:ml-10 justify-between bg-[#608A7D] box-border absolute md:-top-16 -top-32 rounded-lg border-2 shadow-2xl shadow-black border-[#C19E70] sm:h-36">
-          <div className="flex gap-6 md:gap-6  sm:gap-32 mt-3 sm:mt-10 mb-10 pb-1 sm:flex-row flex-col items-center">
+        <div className="w-11/12 mx-auto flex flex-col sm:flex-row ml-5 sm:ml-10 md:ml-10 justify-between bg-[#608A7D] box-border absolute md:-top-16 -top-32 rounded-lg border-2 shadow-2xl shadow-black border-[#C19E70] sm:h-36">
+          <div className="flex gap-6 md:gap-6 sm:gap-32 mt-3 sm:mt-10 mb-10 pb-1 sm:flex-row flex-col items-center">
             <div className="flex gap-2 sm:gap-6 p-4 md:p-2 sm:ml-12">
               <div className="w-8 h-8 sm:w-6 sm:h-6 bg-[#C19E70] rounded-full flex items-center justify-center">
                 <img
@@ -77,7 +77,7 @@ const Footer = () => {
             </h1>
           </div>
 
-          <div className="flex gap-6 ml-10  md:ml-4 sm:gap-10 sm:mr-10 p-8">
+          <div className="flex gap-6 ml-10 md:ml-4 sm:gap-10 sm:mr-10 p-8">
             <button className="bg-[#C19E70] w-24 md:ml-4 h-10 sm:w-20 sm:h-10 text-white uppercase cursor-pointer hover:bg-black">
               login
             </button>
@@ -94,39 +94,51 @@ const Footer = () => {
             SUBSCRIBE TO OUR NEWSLETTER
           </h1>
         </div>
-        <div className="bg-[#d9d9d950] mt-[0px] w-11/12 md:w-3/4 lg:w-1/2 mx-auto  rounded-lg">
+        <div className="bg-[#d9d9d950] mt-[0px] w-11/12 md:w-3/4 lg:w-1/2 mx-auto rounded-lg">
           <form onSubmit={handleSubmit} className="p-10 h-auto">
-            <label htmlFor="username1" className="block text-center">
-              FullName
+            <div className="flex flex-col md:flex-row md:justify-center md:items-center">
+              <label
+                htmlFor="username1"
+                className="block text-center md:text-right md:mr-4"
+              >
+                Full Name
+              </label>
               <input
                 type="text"
                 id="username1"
-                className="border-2 bg-transparent md:ml-2 mt-2 mb-4 p-2 w-full md:w-2/3 lg:w-3/4"
+                className="border-2 bg-transparent mt-2 mb-4 p-2 w-full md:w-2/3 lg:w-3/4"
                 onChange={(e) => setFullName(e.target.value)}
                 value={fullName}
               />
-            </label>
-            <label htmlFor="username2" className="block text-center ml-4 ">
-              Email
+            </div>
+            <div className="flex flex-col md:flex-row md:justify-center md:items-center">
+              <label
+                htmlFor="username2"
+                className="block text-center md:text-right md:mr-4"
+              >
+                Email
+              </label>
               <input
-                type="text"
+                type="email"
                 id="username2"
-                className="border-2 bg-transparent md:ml-4 mt-2 mb-4 p-2 w-full md:w-2/3 lg:w-3/4"
+                className="border-2 bg-transparent mt-2 mb-4 p-2 w-full md:w-2/3 lg:w-3/4"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
               />
-
-            </label><button
+            </div>
+            <div className="text-center">
+              <button
                 type="submit"
                 disabled={isLoading}
-                className="capitalise text-[20px] w-[100px] ml-[90px] md:w-auto md:ml-[40%] lg:w-auto md:mt-[18px] lg:ml-4 p-2 bg-[#608A7D]  rounded-xl text-white"
+                className="text-[20px] w-[150px] p-2 bg-[#608A7D] rounded-xl text-white mt-4 md:mt-0"
               >
                 {isLoading ? "Subscribing..." : "Subscribe"}
               </button>
+            </div>
           </form>
           {message && (
             <p
-              className={`text-center p-8 mt-[-30px] ${
+              className={`text-center p-4 mt-4 ${
                 message.includes("success") ? "text-green-700" : "text-red-700"
               }`}
             >

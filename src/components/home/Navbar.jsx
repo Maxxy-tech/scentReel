@@ -6,7 +6,7 @@ import twitter from "../../assets/twitter.png";
 import linkedin from "../../assets/linkedin.png";
 import empty from "../../assets/Empty.png";
 import { UserContext } from "../../context/userContext"; // For accessing user data
-import  AuthContext  from "../../context/Authprovider"; // For accessing auth state
+import AuthContext from "../../context/Authprovider"; // For accessing auth state
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -70,18 +70,52 @@ const Navbar = () => {
       <div className="bg-[#ffffff1f]">
         <div className="p-4 flex justify-between items-center">
           <ul className="flex gap-1 sm:gap-5">
-            {[facebook, instagram, twitter, linkedin].map((icon, index) => (
-              <li
-                key={index}
-                className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black"
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
+              <a
+                href="https://www.facebook.com/profile.php?id=61557224493444&mibextid=LQQJ4d"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
-                  src={icon}
-                  alt={icon.split("/").pop().split(".")[0]} // Extract the name from the file path
+                  src={facebook}
+                  alt="facebook"
                   className="h-full w-full object-cover"
                 />
-              </li>
-            ))}
+              </a>
+            </li>
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
+              <a
+                href="https://www.instagram.com/scentreel_?igsh=MXJ2M3F2MGtjNmZ2dA=="
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={instagram}
+                  alt="instagram"
+                  className="h-full w-full object-cover"
+                />
+              </a>
+            </li>
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
+              <a
+                href="https://x.com/scentreel?s=21&t=8jRwTZxPsgEyK-Q062VTrg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={twitter}
+                  alt="twitter"
+                  className="h-full w-full object-cover"
+                />
+              </a>
+            </li>
+            <li className="h-6 w-6 md:w-10 md:h-10 bg-[#C19E70] rounded-full flex items-center justify-center shadow-2xl shadow-black">
+              <img
+                src={linkedin}
+                alt="linkedin"
+                className="h-full w-full object-cover"
+              />
+            </li>
           </ul>
           <div className="flex items-center">
             {user ? (

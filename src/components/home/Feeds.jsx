@@ -4,7 +4,7 @@ import heart2 from "../../assets/icons8-heart-30.png";
 import retweet from "../../assets/Default.png";
 import comment from "../../assets/icons8-comment-50.png";
 import axios from "axios";
-import {NavLink} from 'react-router-dom'
+import { NavLink } from "react-router-dom";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import arrow from "../../assets/Vector (1).png";
 
@@ -22,7 +22,6 @@ const Feeds = () => {
         );
         const fetchedPosts = response.data.data || [];
 
-        // Ensure posts have user information
         const postsWithUsers = fetchedPosts.map((post) => ({
           ...post,
           user: post.user || {
@@ -59,8 +58,7 @@ const Feeds = () => {
     });
   };
 
-  // Get the last 6 posts
-  const lastSixPosts = posts.slice(6);
+  const lastSixPosts = posts.slice(-6);
 
   return (
     <div
@@ -68,22 +66,21 @@ const Feeds = () => {
         darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
       } p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 relative`}
     >
-     
       {lastSixPosts.length > 0 ? (
         lastSixPosts.map((post, index) => (
           <div
             key={post.id || index}
             className={`post ${
               darkMode ? "bg-gray-800" : "bg-white"
-            } mb-4 p-8 flex flex-col items-start shadow-sm`}
+            } mb-4 p-8 flex flex-col items-start shadow-sm rounded-lg`}
           >
-            <div>
+            <div className="flex items-start">
               <img
                 src={post.author.profileImageUrl || img}
                 alt="user"
                 className="w-[58px] h-[58px] rounded-full object-cover mb-4"
               />
-              <div className="flex-1 w-full">
+              <div className="flex-1 ml-4">
                 <div className="post-header flex items-center justify-between">
                   <div className="post-user-info">
                     <span className="font-semibold text-lg block">
@@ -94,11 +91,11 @@ const Feeds = () => {
                     </span>
                   </div>
                   <span className="post-timestamp text-gray-400 text-sm">
-                    {post.formattedTime}
+                    {renderTimestamp(post.createdAt)}
                   </span>
                 </div>
                 <div className="post-content mt-2">
-                  <p className="text-base ml-[25px] p-4">{post.content}</p>
+                  <p className="text-base">{post.content}</p>
                   {post.imageUrl && (
                     <img
                       className="mt-2 w-full rounded-lg object-cover"
@@ -137,18 +134,19 @@ const Feeds = () => {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="relative mt-4 w-full">
               <div className="absolute bottom-0 left-0 w-full h-[90px] transform translate-y-[50%]">
                 <div className="relative w-full h-full">
                   <div className="absolute inset-0 bg-gradient-to-b from-white to-[#6e6868b7] opacity-70 z-10"></div>
-                  <div className="absolute inset-0 bg-no-repeat bg-cover z-20"></div>
                   <NavLink to="/forum">
                     <img
                       src={arrow}
                       className="relative md:w-[25px] w-[15px] animate-bounce ml-[50%] z-30"
-                      alt=""
+                      alt="arrow"
                     />
-                  </NavLink>{" "}
-                  <p className="ml-[48%] text-[px]">view more</p>
+                  </NavLink>
+                  <p className="ml-[48%] text-sm">view more</p>
                 </div>
               </div>
             </div>
