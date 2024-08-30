@@ -24,74 +24,106 @@ import UserDashboard from "./pages/user/UserDashboard";
 import ForgotPwd from "./components/auth/ForgotPwd";
 import PersistLogin from "./components/auth/PersistLogin";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/home",
-    element: <Navigate to="/" />, // Redirect /home to /
-  },
-  {
-    path: "login",
-    element: <Login />,
-  },
-  {
-    path: "reset",
-    element: <Reset />,
-  },
-  {
-    path: "signup",
-    element: <Signup />,
-  },
-  {
-    path: "about",
-    element: <About />,
-  },
-  {
-    path: "forgot-pwd",
-    element: <ForgotPwd />,
-  },
-  {
-    path: "contact",
-    element: <Contact />,
-  },
-  {
-    path: "user-dashboard",
-    element: <UserDashboard />,
-  },
-  {
-    element: <PersistLogin />,
-    children: [
-      {
-        element: <RequireAuth />, // Protected routes
-        children: [
-          {
-            path: "brand",
-            element: <Brand />,
-          },
-          {
-            path: "forum",
-            element: <Forum />,
-          },
-          {
-            path: "blog",
-            element: <Blog />,
-          },
-        ],
-      },
-    ],
-  },
-]);
+import Admin from "./pages/admin/AdminDashboard";
+import RequireAdmin from "./pages/admin/auth/RequireAdmin";
+import AdminLogin from "./pages/admin/auth/Login-Admin"; // Import the AdminLogin component
+import AdminRegister from "./pages/admin/auth/Register-Admin"; // Import the AdminLogin component
+
+const AppRouter = () => {
+  const routes = [
+    {
+      path: "/",
+      element: <Home />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "admin",
+      element: <Admin />,
+    },
+    {
+      path: "/home",
+      element: <Navigate to="/" />, // Redirect /home to /
+    },
+    {
+      path: "login",
+      element: <Login />,
+    },
+    {
+      path: "reset",
+      element: <Reset />,
+    },
+    {
+      path: "signup",
+      element: <Signup />,
+    },
+    {
+      path: "about",
+      element: <About />,
+    },
+    {
+      path: "forgot-pwd",
+      element: <ForgotPwd />,
+    },
+    {
+      path: "contact",
+      element: <Contact />,
+    },
+    {
+      path: "user-dashboard",
+      element: <UserDashboard />,
+    },
+    {
+      path: "Login-Admin", // Admin login route
+      element: <AdminLogin />,
+    },
+    {
+      path: "Register-Admin", // Admin login route
+      element: <AdminRegister />,
+    },
+    {
+      element: <PersistLogin />,
+      children: [
+        {
+          element: <RequireAuth />, // Protected routes
+          children: [
+            {
+              path: "brand",
+              element: <Brand />,
+            },
+            {
+              path: "forum",
+              element: <Forum />,
+            },
+            {
+              path: "blog",
+              element: <Blog />,
+            },
+          ],
+        },
+        {
+          element: <RequireAdmin />, // Admin protected routes
+          children: [
+            // {
+            //   path: "admin",
+            //   element: <Admin />,
+            // },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const router = createBrowserRouter(routes);
+
+  return <RouterProvider router={router} />;
+};
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <GoogleOAuthProvider >
+    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
       <AuthProvider>
         <UserProvider>
-          <RouterProvider router={router} />
+          <AppRouter />
         </UserProvider>
       </AuthProvider>
     </GoogleOAuthProvider>
