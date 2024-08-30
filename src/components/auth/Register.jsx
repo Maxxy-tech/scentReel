@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import {Link} from 'react-router-dom'
 import { Spinner } from "@material-tailwind/react";
 import axios from "axios";
 import google from "../../assets/icons8-google-48.png";
@@ -330,12 +331,12 @@ const Signup = () => {
                   <div className="text-center md:mt-4 mt-0 md:mb-0 mb-[190px] ">
                     <h3>
                       Already have an account?{" "}
-                      <a
-                        href="/login"
+                      <Link
+                        to="/login"
                         className="text-[#3a059c] font-bold hover:bg-slate-900"
                       >
                         Login here
-                      </a>
+                      </Link>
                     </h3>
                   </div>
                 </div>
