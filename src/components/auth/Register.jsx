@@ -59,7 +59,7 @@ const InputField = ({
         className={`w-full border p-2 border-black h-8 rounded ${className}`}
       />
       {icon && (
-        <button type="button" onClick={toggleReveal} className="absolute right-1 top-[25%] md:right-[6.5rem] lg:right-[7rem]">
+        <button type="button" onClick={toggleReveal} className="absolute right-1 top-[25%] md:right-[6.5rem] lg:right-[9rem]">
           <img
             src={reveal ? icon : toggleIcon}
             width="15px"
