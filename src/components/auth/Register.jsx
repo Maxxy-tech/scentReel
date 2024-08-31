@@ -15,8 +15,8 @@ import "./register.css";
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
 import Otp from "./Otp";
-import { useAuthContext } from "../../context/useAuthContext";
-import './register.css'
+// import { useAuthContext } from "../../context/useAuthContext";
+
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -56,10 +56,10 @@ const InputField = ({
         aria-describedby={ariaDescribedby}
         onFocus={onFocus}
         onBlur={onBlur}
-        className={`w-full border p-2 border-black h-8 rounded ${className}`}
+        className={`w-[100vw] border p-2 border-black h-8 rounded ${className}`}
       />
       {icon && (
-        <button type="button" onClick={toggleReveal} className="eye">
+        <button type="button" onClick={toggleReveal} className="eye ">
           <img
             src={reveal ? icon : toggleIcon}
             width="20px"

@@ -10,12 +10,11 @@ import eye from "../../../assets/icons8-eye-50.png";
 import eye2 from "../../../assets/icons8-hide-password-30.png";
 import divImg from "../../../assets/Gentleman.png";
 import vector1 from "../../../assets/Vector 1 (3).png";
-import "./register.css";
 import Navbar from "../../../components/home/Navbar";
 import Footer from "../../../components/home/Footer";
 import Otp from "./Otp";
 import { useAuthContext } from "../../../context/useAuthContext";
-import "./register.css";
+import "./registeradmin.css";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;

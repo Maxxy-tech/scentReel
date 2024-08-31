@@ -42,9 +42,10 @@ label {
 .eye {
   position: absolute;
   top: 50%;
-  right: 1rem; /* Adjusted to be near the right side */
+  right: 6rem; /* Adjusted to be near the right side */
   transform: translateY(-50%);
   padding: 2px;
+ cursor: pointer;
 }
 
 /* For the visibility toggle button */
