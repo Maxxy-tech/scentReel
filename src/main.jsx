@@ -25,9 +25,9 @@ import ForgotPwd from "./components/auth/ForgotPwd";
 import PersistLogin from "./components/auth/PersistLogin";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Admin from "./pages/admin/AdminDashboard";
-import RequireAdmin from "./pages/admin/auth/RequireAdmin";
-import AdminLogin from "./pages/admin/auth/Login-Admin"; // Import the AdminLogin component
-import AdminRegister from "./pages/admin/auth/Register-Admin"; // Import the AdminLogin component
+import RequireAdmin from "./pages/admin/Admin-auth/RequireAdmin";
+import AdminLogin from "./pages/admin/Admin-auth/Login-Admin"; // Import the AdminLogin component
+import AdminRegister from "./pages/admin/Admin-auth/Register-Admin"; // Import the AdminLogin component
 
 const AppRouter = () => {
   const routes = [

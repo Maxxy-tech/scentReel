@@ -6,6 +6,7 @@ input {
   border-style: outset;
   border-color: #608a7d;
   padding: 8px;
+  position:relative;
 }
 
 /* Headings */
@@ -42,7 +43,9 @@ label {
 .eye {
   position: absolute;
   top: 50%;
-  right: 1rem; /* Adjusted to be near the right side */
+  /* Adjusted to be near the right side */
+  right: 6rem;
+  background-color: rgb(233, 230, 247);
   transform: translateY(-50%);
   padding: 2px;
 }
@@ -72,7 +75,7 @@ input[type="password"] + button img {
   }
 
   .eye {
-    right: 18%; /* Adjust the position of the eye icon */
+    right: 7rem; /* Adjust the position of the eye icon */
   }
 }
 
@@ -114,6 +117,7 @@ input[type="password"] + button img {
   }
 
   .eye {
-    right: 7m; /* Further adjust the position of the eye icon */
+    /* Further adjust the position of the eye icon */
+
   }
 }

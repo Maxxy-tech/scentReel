@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import "./register.css";
+
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
 import "./styly.css";

@@ -11,7 +11,7 @@ import eye from "../../assets/icons8-eye-50.png";
 import eye2 from "../../assets/icons8-hide-password-30.png";
 import divImg from "../../assets/Gentleman.png";
 import vector1 from "../../assets/Vector 1 (3).png";
-import "./register.css";
+
 import Navbar from "../home/Navbar";
 import Footer from "../../components/home/Footer";
 import Otp from "./Otp";
@@ -56,14 +56,15 @@ const InputField = ({
         aria-describedby={ariaDescribedby}
         onFocus={onFocus}
         onBlur={onBlur}
-        className={`w-[100vw] border p-2 border-black h-8 rounded ${className}`}
+        className={`w-full border p-2 border-black h-8 rounded ${className}`}
       />
       {icon && (
-        <button type="button" onClick={toggleReveal} className="eye ">
+        <button type="button" onClick={toggleReveal} className="absolute right-1 top-[25%] md:right-[6.5rem] lg:right-[7rem]">
           <img
             src={reveal ? icon : toggleIcon}
-            width="20px"
+            width="15px"
             alt={toggleIconAlt}
+            className=""
           />
         </button>
       )}

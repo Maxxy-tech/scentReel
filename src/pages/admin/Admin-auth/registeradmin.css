@@ -115,6 +115,6 @@ input[type="password"] + button img {
   }
 
   .eye {
-    right: 7m; /* Further adjust the position of the eye icon */
+    right: 1rem; /* Further adjust the position of the eye icon */
   }
 }
